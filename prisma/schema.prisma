@@ -11,11 +11,11 @@ model Plan {
   id String @id @default(uuid())
 
   title        String
-  description  String
-  date         DateTime
-  location     String[]
+  description  String?
+  date         String
+  locations    String[]
   participants String[]
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
 }
