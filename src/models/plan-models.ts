@@ -1,7 +1,7 @@
 export interface PlanType {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   date: string;
 
   locations: string[];
@@ -9,6 +9,6 @@ export interface PlanType {
 
   archive?: boolean;
 
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }

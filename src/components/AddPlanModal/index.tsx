@@ -10,31 +10,37 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { CancelButton } from "./cancel-button";
 
 export function AddPlan() {
   return (
-    <Card>
+    <Card className="rounded-none border-none w-full">
       <CardHeader>
-        <CardTitle>Report an issue</CardTitle>
+        <CardTitle>Create a new Plan</CardTitle>
         <CardDescription>
-          What area are you having problems with?
+          Where would you like to go? Who are you going with?
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="subject">Subject</Label>
-          <Input id="subject" placeholder="I need help with..." />
+          <Label htmlFor="title">Title</Label>
+          <Input id="title" placeholder="Your plan name" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            placeholder="Please include all information relevant to your issue."
-          />
+          <Textarea id="description" placeholder="What will you be doing?" />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="locations">Locations</Label>
+          <Input id="locations" placeholder="ex: Brasilia, Portugal, ..." />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="participants">participants</Label>
+          <Input id="participants" placeholder="ex: Alex, Vitor, ..." />
         </div>
       </CardContent>
       <CardFooter className="justify-between space-x-2">
-        <Button variant="ghost">Cancel</Button>
+        <CancelButton />
         <Button>Submit</Button>
       </CardFooter>
     </Card>

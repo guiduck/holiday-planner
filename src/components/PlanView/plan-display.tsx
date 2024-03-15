@@ -9,17 +9,41 @@ import { useState } from "react";
 import { formatDate } from "@/lib/utils/formatDate";
 import { PlanType } from "@/models/plan-models";
 import { AddPlan } from "../AddPlanModal";
+import { useModalStore } from "@/stores/modal-control";
+import { useDateStore } from "@/stores/date-store";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
 }
 
+// TODO: make this server using the urlsearch params, and set search params upon date pick
 export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
   const [date, setDate] = useState<Date>();
-  const [newPlan, setNewPlan] = useState<boolean>(false);
+
+  const { showAddPlan, setShowAddPlan, showCalendar, setShowCalendar } =
+    useModalStore();
+  const { dateParam, dateFormated, setDateParam } = useDateStore();
+  console.log(plan);
+
   return (
     <div className="flex h-full flex-col">
-      {newPlan && <AddPlan />}
+      {showAddPlan && (
+        <div className="hidden flex-col md:flex  w-full">
+          <AddPlan />
+          <Separator />
+        </div>
+      )}
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <Tooltip>
@@ -43,46 +67,37 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
           </Tooltip>
           <Separator orientation="vertical" className="mx-1 h-6" />
         </div>
-        <Tooltip>
-          <Popover>
-            <PopoverTrigger asChild>
-              <TooltipTrigger asChild>
-                <div className="w-full flex justify-center items-center">
-                  <Button
-                    className="gap-3"
-                    variant="ghost"
-                    size="default"
-                    disabled={false}
-                  >
-                    {/* TODO: colocar data selecionada */}
-                    <span>Pick a date</span>
-                    <CalendarIcon className="ml-auto h-5 w-5" />
-                    <span className="sr-only">Date</span>
-                  </Button>
-                </div>
-              </TooltipTrigger>
-            </PopoverTrigger>
-            <PopoverContent className="flex w-[auto] p-5">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(event) => {
-                  console.log(event);
-                  setDate(event);
-                }}
-                className="rounded-md border"
-              />
-            </PopoverContent>
-          </Popover>
-          <TooltipContent>Current date</TooltipContent>
-        </Tooltip>
-        <div className="ml-auto flex items-center gap-2"></div>
 
-        <Separator orientation="vertical" className="mx-2 h-6" />
+        <div className="ml-auto flex items-center gap-2">
+          <Separator orientation="vertical" className="mx-1 h-6" />
+          <Tooltip>
+            <TooltipTrigger>
+              <div className="w-full flex justify-center items-center">
+                <Button
+                  className="gap-3 "
+                  variant="ghost"
+                  size="default"
+                  disabled={false}
+                  onClick={() => setShowCalendar(!showCalendar)}
+                >
+                  {/* TODO: colocar data selecionada */}
+                  <span>Pick a date</span>
+                  <CalendarIcon className="ml-auto h-5 w-5" />
+                  <span className="sr-only">Date</span>
+                </Button>
+              </div>
+            </TooltipTrigger>
+
+            <TooltipContent>Current date</TooltipContent>
+          </Tooltip>
+          {plan?.date && (
+            <Separator orientation="vertical" className="mx-1 h-6" />
+          )}
+        </div>
 
         {plan?.date && (
           <div className="ml-auto text-xs text-muted-foreground">
-            {plan.date || formatDate(date)}
+            {plan.date || dateFormated}
           </div>
         )}
       </div>
@@ -98,13 +113,13 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
         </div>
       ) : (
         <div className="p-8 flex flex-col gap-6 text-center ">
-          <h1 className="text-2xl font-bold">{formatDate(date)}</h1>
+          <h1 className="text-2xl font-bold">{dateFormated}</h1>
           <p className="text-2xl font-bold text-muted-foreground">
             No plans for this date
           </p>
           <Button
             className="max-w-80 m-auto"
-            onClick={() => setNewPlan(!newPlan)}
+            onClick={() => setShowAddPlan(!showAddPlan)}
           >
             Create a new plan
           </Button>

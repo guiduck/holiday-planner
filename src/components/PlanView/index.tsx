@@ -15,6 +15,7 @@ import { Separator } from "../ui/separator";
 import { PlanType } from "@/models/plan-models";
 import { PlanList } from "./plan-list";
 import { PlanDisplay } from "./plan-display";
+import { usePlansStore } from "@/stores/plan-store";
 
 interface PlanProps {
   plans: PlanType[];
@@ -30,10 +31,11 @@ export function PlanView({
   navCollapsedSize,
 }: Readonly<PlanProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  // TODO: switch this to zustand after
-  const [plan, setPlan] = React.useState({
-    selected: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
-  });
+  const { selectedPlan, setDisplayPlans, displayPlans } = usePlansStore();
+
+  React.useEffect(() => {
+    setDisplayPlans(plans);
+  }, [plans]);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -86,23 +88,61 @@ export function PlanView({
               <form>
                 <div className="relative">
                   <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search" className="pl-8" />
+                  <Input
+                    placeholder="Search"
+                    className="pl-8"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const { value } = e.target;
+                      setDisplayPlans(
+                        plans.filter(
+                          (plan) =>
+                            plan.title.includes(value) ||
+                            plan.description?.includes(value)
+                        )
+                      );
+                    }}
+                  />
                 </div>
               </form>
             </div>
             <TabsContent value="all" className="m-0">
-              <PlanList items={plans} />
+              <PlanList items={displayPlans as PlanType[]} />
             </TabsContent>
             <TabsContent value="unread" className="m-0">
-              <PlanList items={plans.filter((item) => !item.archive)} />
+              <PlanList
+                items={
+                  displayPlans?.filter((item) => !item.archive) as PlanType[]
+                }
+              />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <PlanDisplay
-            plan={plans.find((item) => item.id === plan.selected) || null}
-          />
+        <div className="hidden md:contents">
+          <ResizableHandle withHandle />
+        </div>
+        <ResizablePanel
+          className=""
+          defaultSize={defaultLayout[1]}
+          minSize={30}
+        >
+          <div className="hidden md:block">
+            <PlanDisplay
+              plan={
+                displayPlans?.find((item) => item.id === selectedPlan?.id) ||
+                null
+              }
+            />
+          </div>
+          <div className="block absolute top-0 left-0 w-full md:hidden">
+            <div className="h-screen flex flex-col mt-[40%]">
+              <PlanDisplay
+                plan={
+                  displayPlans?.find((item) => item.id === selectedPlan?.id) ||
+                  null
+                }
+              />
+            </div>
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
