@@ -3,10 +3,10 @@ import { create } from "zustand";
 
 interface StoreProps {
   selectedPlan?: PlanType;
-  setSelectedPlan: (plan: PlanType) => void;
+  setSelectedPlan: (plan?: PlanType) => void;
 
   displayPlans?: PlanType[];
-  setDisplayPlans: (plans: PlanType[]) => void;
+  setDisplayPlans: (plans?: PlanType[]) => void;
 }
 
 export const usePlansStore = create<StoreProps>((set) => ({
@@ -14,5 +14,5 @@ export const usePlansStore = create<StoreProps>((set) => ({
   setSelectedPlan: (plan?: PlanType) => set(() => ({ selectedPlan: plan })),
 
   displayPlans: undefined,
-  setDisplayPlans: (plans: PlanType[]) => set(() => ({ displayPlans: plans })),
+  setDisplayPlans: (plans?: PlanType[]) => set(() => ({ displayPlans: plans })),
 }));
