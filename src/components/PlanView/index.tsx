@@ -36,7 +36,7 @@ export function PlanView({
 
   React.useEffect(() => {
     setDisplayPlans(plans);
-  }, [plans]);
+  }, []);
 
   return (
     <TooltipProvider delayDuration={0}>

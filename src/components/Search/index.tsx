@@ -1,23 +1,16 @@
 import { PlanType } from "@/models/plan-models";
 import { Search as SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePlansStore } from "@/stores/plan-store";
 
 interface SearchProps {
   plans: PlanType[];
 }
 
-export function Search({ plans }: Readonly<SearchProps>) {
+export function Search({ plans = [] }: Readonly<SearchProps>) {
   const { setDisplayPlans } = usePlansStore();
 
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
   const hadnleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const params = new URLSearchParams(searchParams);
-    replace(`${pathname}?${params.toString()}`);
     const { value } = e.target;
 
     setDisplayPlans(
@@ -35,7 +28,7 @@ export function Search({ plans }: Readonly<SearchProps>) {
         <Input
           placeholder="Search"
           className="pl-8"
-          defaultValue={searchParams.get("currentDate")?.toString()}
+          defaultValue=""
           onChange={hadnleSearch}
         />
       </div>

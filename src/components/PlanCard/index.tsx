@@ -4,6 +4,8 @@ import { usePlansStore } from "@/stores/plan-store";
 import { Badge } from "../ui/badge";
 import { Clock, MapPin } from "lucide-react";
 import { ComponentProps } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import setPlanIdCookie from "@/lib/actions/setPlanId";
 
 interface PlanCardProps {
   plan?: PlanType;
@@ -11,18 +13,34 @@ interface PlanCardProps {
 
 export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
   const { setSelectedPlan, selectedPlan } = usePlansStore();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const searchParams = useSearchParams();
+
   return (
     <button
       className={cn(
         "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
         selectedPlan?.id === plan?.id && "bg-muted"
       )}
-      onClick={() => {
-        if (selectedPlan?.id === plan?.id) {
-          return setSelectedPlan(undefined);
+      onClick={async () => {
+        const params = new URLSearchParams(searchParams);
+        let selected = selectedPlan;
+
+        if (selectedPlan?.id !== plan?.id) {
+          selected = plan;
+          params.set("planId", plan?.id as string);
+          await setPlanIdCookie(plan?.id as string);
         }
-        return setSelectedPlan(plan);
-        // setDateParam(undefined);
+
+        if (selectedPlan?.id === plan?.id && selectedPlan !== undefined) {
+          selected = undefined;
+          params.delete("planId");
+        }
+        // selected = undefined;
+        replace(`${pathname}?${params.toString()}`);
+        return setSelectedPlan(selected);
       }}
     >
       <div className="flex w-full flex-col gap-1">
