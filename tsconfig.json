@@ -23,6 +23,7 @@
       "@/styles/*": ["styles/*"],
       "@/lib/*": ["lib/*"],
       "@/app/*": ["app/*"],
+      "@/mocks/*": ["mocks/*"],
       "@/models/*": ["models/*"],
       "@/stores/*": ["stores/*"]
     }

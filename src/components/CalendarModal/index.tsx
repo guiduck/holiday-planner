@@ -1,4 +1,5 @@
 "use client";
+
 import { useModalStore } from "@/stores/modal-control";
 import {
   Card,
@@ -13,6 +14,7 @@ import { useDateStore } from "@/stores/date-store";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { CalendarIcon, CircleX } from "lucide-react";
 import { Button } from "../ui/button";
+import setDateCookie from "@/lib/actions/setDate";
 
 export function CalendarModal() {
   const { showCalendar, setShowCalendar } = useModalStore();
@@ -36,8 +38,8 @@ export function CalendarModal() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <PopoverTrigger>
-                <div className="w-full flex justify-center items-center">
+              <div className="w-full flex justify-center items-center">
+                <PopoverTrigger>
                   <Button
                     className="gap-3"
                     variant="ghost"
@@ -48,19 +50,24 @@ export function CalendarModal() {
                     <CalendarIcon className="ml-auto h-5 w-5" />
                     <span className="sr-only">Date</span>
                   </Button>
-                </div>
-              </PopoverTrigger>
+                </PopoverTrigger>
+              </div>
               <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
                   selected={dateParam}
+                  onDayClick={async (event) => {
+                    await setDateCookie(event);
+                  }}
                   onSelect={(event) => setDateParam(event as Date)}
                   className="rounded-md border min-w-[300px] flex items-center justify-center"
                 />
               </PopoverContent>
             </CardContent>
             <CardFooter className="justify-between space-x-2">
-              <Button onClick={() => setShowCalendar(false)}>Okay</Button>
+              <Button type="submit" onClick={() => setShowCalendar(false)}>
+                Okay
+              </Button>
             </CardFooter>
           </div>
         </Card>

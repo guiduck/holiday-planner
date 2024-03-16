@@ -1,8 +1,24 @@
+"use server";
 import prisma from "@/lib/prisma";
 
 export async function getPlans() {
   try {
-    const plans = await prisma.plan.findMany();
+    let plans;
+
+    const response = await fetch("http://localhost:3000/api/plans", {
+      next: {
+        tags: ["get-plans"],
+      },
+    });
+
+    if (response) {
+      plans = (await response.json()).data;
+    }
+
+    if (!plans) {
+      plans = await prisma.plan.findMany();
+    }
+
     return plans;
   } catch (error) {
     throw new Error(JSON.stringify(error));

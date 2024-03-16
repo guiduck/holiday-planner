@@ -21,6 +21,7 @@ interface PlanProps {
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
+  currentDate?: string;
 }
 
 export function PlanView({
@@ -28,6 +29,7 @@ export function PlanView({
   defaultLayout = [50, 50],
   defaultCollapsed = false,
   navCollapsedSize,
+  currentDate,
 }: Readonly<PlanProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const { selectedPlan, setDisplayPlans, displayPlans } = usePlansStore();
@@ -74,7 +76,12 @@ export function PlanView({
                 >
                   All plans
                 </TabsTrigger>
-
+                <TabsTrigger
+                  value="date"
+                  className="text-zinc-600 dark:text-zinc-200"
+                >
+                  date
+                </TabsTrigger>
                 <TabsTrigger
                   value="unread"
                   className="text-zinc-600 dark:text-zinc-200"
@@ -91,7 +98,10 @@ export function PlanView({
             </div>
 
             <TabsContent value="all" className="m-0">
-              <PlanList items={displayPlans as PlanType[]} />
+              <PlanList
+                items={displayPlans as PlanType[]}
+                selectedPlan={selectedPlan}
+              />
             </TabsContent>
 
             <TabsContent value="unread" className="m-0">
@@ -99,6 +109,18 @@ export function PlanView({
                 items={
                   displayPlans?.filter((item) => !item.archive) as PlanType[]
                 }
+                selectedPlan={selectedPlan}
+              />
+            </TabsContent>
+
+            <TabsContent value="date" className="m-0">
+              <PlanList
+                items={
+                  displayPlans?.filter(
+                    (item) => item.date === currentDate
+                  ) as PlanType[]
+                }
+                selectedPlan={selectedPlan}
               />
             </TabsContent>
           </Tabs>

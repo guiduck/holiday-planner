@@ -1,27 +1,17 @@
+"use client";
 import { Archive, CalendarIcon, Trash2 } from "lucide-react";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Separator } from "../ui/separator";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Calendar } from "../ui/calendar";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { formatDate } from "@/lib/utils/formatDate";
 import { PlanType } from "@/models/plan-models";
-import { AddPlan } from "../AddPlanModal";
 import { useModalStore } from "@/stores/modal-control";
 import { useDateStore } from "@/stores/date-store";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Textarea } from "../ui/textarea";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { AddPlan } from "../AddPlanPanel";
+import deletePlan from "@/lib/actions/deletePlan";
+import { useFormStatus } from "react-dom";
+import { Spinner } from "../Spinner";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
@@ -29,12 +19,12 @@ interface PlanDisplayProps {
 
 // TODO: make this server using the urlsearch params, and set search params upon date pick
 export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
-  const [date, setDate] = useState<Date>();
-
   const { showAddPlan, setShowAddPlan, showCalendar, setShowCalendar } =
     useModalStore();
-  const { dateParam, dateFormated, setDateParam } = useDateStore();
-  console.log(plan);
+  const { dateFormated } = useDateStore();
+
+  //TODO: implement pending status on other components
+  const { pending } = useFormStatus();
 
   return (
     <div className="flex h-full flex-col">
@@ -49,8 +39,14 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" disabled={!plan}>
-                <Archive className="h-4 w-4" />
-                <span className="sr-only">Archive</span>
+                {pending ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <Archive className="h-4 w-4" />
+                    <span className="sr-only">Archive</span>
+                  </>
+                )}
               </Button>
             </TooltipTrigger>
             <TooltipContent>Archive</TooltipContent>
@@ -58,7 +54,12 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!plan}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!plan}
+                onClick={async () => await deletePlan(plan?.id)}
+              >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
@@ -71,8 +72,8 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
         <div className="ml-auto flex items-center gap-2">
           <Separator orientation="vertical" className="mx-1 h-6" />
           <Tooltip>
-            <TooltipTrigger>
-              <div className="w-full flex justify-center items-center">
+            <div className="w-full flex justify-center items-center">
+              <TooltipTrigger asChild>
                 <Button
                   className="gap-3 "
                   variant="ghost"
@@ -85,8 +86,8 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                   <CalendarIcon className="ml-auto h-5 w-5" />
                   <span className="sr-only">Date</span>
                 </Button>
-              </div>
-            </TooltipTrigger>
+              </TooltipTrigger>
+            </div>
 
             <TooltipContent>Current date</TooltipContent>
           </Tooltip>
@@ -115,7 +116,7 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
         <div className="p-8 flex flex-col gap-6 text-center ">
           <h1 className="text-2xl font-bold">{dateFormated}</h1>
           <p className="text-2xl font-bold text-muted-foreground">
-            No plans for this date
+            Select a plan or
           </p>
           <Button
             className="max-w-80 m-auto"
