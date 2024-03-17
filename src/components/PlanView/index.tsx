@@ -12,10 +12,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Separator } from "../ui/separator";
 import { PlanType } from "@/models/plan-models";
 import { PlanList } from "./plan-list";
-import { PlanDisplay } from "./plan-display";
 import { usePlansStore } from "@/stores/plan-store";
 import { Search } from "../Search";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
+import { PlanDisplay } from "../@PlanDisplay/page";
 
 interface PlanProps {
   plans: PlanType[];

@@ -10,11 +10,11 @@ import { AddPlan } from "../AddPlanPanel";
 import deletePlan from "@/lib/actions/delete-Plan";
 import { useFormStatus } from "react-dom";
 import { Spinner } from "../Spinner";
-import CalendarButton from "./calendar-button";
-import PlanSelected from "./plan-selected";
 import { useDateStore } from "@/stores/date-store";
 import { usePlansStore } from "@/stores/plan-store";
 import archivePlan from "@/lib/actions/archive-Plan";
+import CalendarButton from "../PlanView/calendar-button";
+import PlanSelected from "../PlanView/plan-selected";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
