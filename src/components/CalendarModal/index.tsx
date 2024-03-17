@@ -14,7 +14,7 @@ import { useDateStore } from "@/stores/date-store";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { CalendarIcon, CircleX } from "lucide-react";
 import { Button } from "../ui/button";
-import setDateCookie from "@/lib/actions/setDate";
+import setDateCookie from "@/lib/actions/set-Date";
 
 export function CalendarModal() {
   const { showCalendar, setShowCalendar, setShowAddPlan } = useModalStore();

@@ -17,15 +17,8 @@ export default function PlanSelected({
 }: Readonly<PlanSelectedProps>) {
   return (
     <div>
-      {plan?.date && (
-        <div className="ml-auto text-xs text-muted-foreground">
-          {plan.date || dateFormated}
-        </div>
-      )}
-      <Separator />
       {!plan ? (
         <div className="p-8 flex flex-col gap-6 text-center ">
-          <h1 className="text-2xl font-bold">{dateFormated}</h1>
           <p className="text-2xl font-bold text-muted-foreground">
             Select a plan or
           </p>

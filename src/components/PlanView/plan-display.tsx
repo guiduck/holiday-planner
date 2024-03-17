@@ -7,13 +7,14 @@ import { Button } from "../ui/button";
 import { PlanType } from "@/models/plan-models";
 import { useModalStore } from "@/stores/modal-control";
 import { AddPlan } from "../AddPlanPanel";
-import deletePlan from "@/lib/actions/deletePlan";
+import deletePlan from "@/lib/actions/delete-Plan";
 import { useFormStatus } from "react-dom";
 import { Spinner } from "../Spinner";
 import CalendarButton from "./calendar-button";
 import PlanSelected from "./plan-selected";
 import { useDateStore } from "@/stores/date-store";
-import archivePlan from "@/lib/actions/archivePlan";
+import { usePlansStore } from "@/stores/plan-store";
+import archivePlan from "@/lib/actions/archive-Plan";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
@@ -23,6 +24,7 @@ interface PlanDisplayProps {
 export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
   const { showAddPlan } = useModalStore();
   const { dateFormated } = useDateStore();
+  const { selectedPlan } = usePlansStore();
 
   //TODO: implement pending status on other components
   const { pending } = useFormStatus();
@@ -30,10 +32,14 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
   return (
     <div className="flex h-full flex-col">
       {showAddPlan && (
-        <div className="hidden flex-col md:flex  w-full">
+        <div className="flex-col md:flex  w-full">
           <AddPlan />
           <Separator />
         </div>
+        // <div className="hidden flex-col md:flex  w-full">
+        //   <AddPlan />
+        //   <Separator />
+        // </div>
       )}
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
@@ -46,7 +52,7 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                 onClick={async () => await archivePlan(plan?.id)}
               >
                 {pending ? (
-                  <Spinner />
+                  <Spinner className="h-4 w-4" />
                 ) : (
                   <>
                     <Archive className="h-4 w-4" />
@@ -85,7 +91,9 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
           )}
         </div>
       </div>
-
+      <h1 className="text-2xl font-bold p-8 text-center">
+        {selectedPlan?.date ?? dateFormated}
+      </h1>
       <PlanSelected
         plan={plan as PlanType}
         dateFormated={dateFormated as string}

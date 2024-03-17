@@ -28,6 +28,6 @@ export default async function getPlanById() {
 
     return plan;
   } catch (error) {
-    throw new Error("error");
+    throw new Error(`error: ${JSON.stringify(error)}`);
   }
 }

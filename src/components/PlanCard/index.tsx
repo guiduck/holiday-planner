@@ -3,11 +3,11 @@ import { PlanType } from "@/models/plan-models";
 import { usePlansStore } from "@/stores/plan-store";
 import { Badge } from "../ui/badge";
 import { Clock, MapPin } from "lucide-react";
-import { ComponentProps } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import setPlanIdCookie from "@/lib/actions/setPlanId";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFDocument } from "@/app/pdf/pdf-document";
+import { Separator } from "../ui/separator";
+import setPlanIdCookie from "@/lib/actions/set-PlanId";
 
 interface PlanCardProps {
   plan?: PlanType;
@@ -93,14 +93,20 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
             ))}
           </div>
         ) : null}
-        <PDFDownloadLink
-          document={<PDFDocument plan={plan} />}
-          fileName="somename.pdf"
-        >
-          {({ blob, url, loading, error }) =>
-            loading ? "Loading document..." : "Download PDF"
-          }
-        </PDFDownloadLink>
+        <div className="flex">
+          <PDFDownloadLink
+            document={<PDFDocument plan={plan} />}
+            fileName="somename.pdf"
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading document..." : "Download PDF"
+            }
+          </PDFDownloadLink>
+          <Separator orientation="vertical" className="mx-1 h-6" />
+          <p className="min-w-[85px]">
+            {selectedPlan?.id !== plan?.id ? "See details" : "Close details"}
+          </p>
+        </div>
       </div>
     </button>
   );

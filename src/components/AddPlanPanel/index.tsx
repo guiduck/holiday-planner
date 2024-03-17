@@ -12,7 +12,7 @@ import {
 } from "../ui/card";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Spinner";
-import handleCreatePlan from "@/lib/actions/createPlan";
+import handleCreatePlan from "@/lib/actions/create-Plan";
 const CancelButton = dynamic(() => import("./cancel-button"), {
   loading: () => <Spinner />,
 });

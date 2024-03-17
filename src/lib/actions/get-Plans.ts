@@ -1,4 +1,5 @@
 "use server";
+
 import prisma from "@/lib/prisma";
 
 export async function getPlans() {
@@ -21,6 +22,6 @@ export async function getPlans() {
 
     return plans;
   } catch (error) {
-    throw new Error(JSON.stringify(error));
+    throw new Error("error: " + JSON.stringify(error));
   }
 }

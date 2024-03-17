@@ -1,10 +1,10 @@
 "use client";
 /* eslint-disable jsx-a11y/alt-text */
-import getPlanById from "@/lib/actions/getPlan";
 import { PlanType } from "@/models/plan-models";
 import { PDFViewer } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
 import { PDFDocument } from "./pdf-document";
+import getPlanById from "@/lib/actions/get-Plan";
 
 const PDFView = () => {
   // const { pending } = useFormStatus();

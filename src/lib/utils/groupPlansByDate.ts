@@ -1,6 +1,6 @@
 import { PlanType } from "@/models/plan-models";
 
-function groupPlansByDate(plans: PlanType[]): PlanType[][] {
+export default function groupPlansByDate(plans: PlanType[]): PlanType[][] {
   const groupedPlans: { [key: string]: PlanType[] } = {};
 
   plans.forEach((plan) => {

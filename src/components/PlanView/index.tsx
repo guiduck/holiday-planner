@@ -15,6 +15,7 @@ import { PlanList } from "./plan-list";
 import { PlanDisplay } from "./plan-display";
 import { usePlansStore } from "@/stores/plan-store";
 import { Search } from "../Search";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 interface PlanProps {
   plans: PlanType[];
@@ -33,31 +34,34 @@ export function PlanView({
 }: Readonly<PlanProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const { selectedPlan, setDisplayPlans, displayPlans } = usePlansStore();
+  const { width } = useWindowDimensions();
 
   React.useEffect(() => {
     console.log("plans", plans);
     if (plans.length > 0) {
       setDisplayPlans(plans);
     }
+    console.log(width);
   }, [plans]);
 
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
-        direction="horizontal"
+        direction={"horizontal"}
+        // direction={width >= 768 ? "horizontal" : "vertical"}
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout=${JSON.stringify(
             sizes
           )}`;
         }}
-        className="h-full max-h-[800px] items-stretch"
+        className="fixed md:relative h-full max-h-[800px] items-stretch"
       >
         <ResizablePanel
           defaultSize={defaultLayout[0]}
           collapsedSize={navCollapsedSize}
           collapsible={true}
-          minSize={20}
-          maxSize={50}
+          minSize={10}
+          maxSize={100}
           onCollapse={(collapsed) => {
             setIsCollapsed(collapsed);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
@@ -124,11 +128,21 @@ export function PlanView({
           <ResizableHandle withHandle />
         </div>
 
+        {/* <ResizableHandle withHandle /> */}
+
         <ResizablePanel
           className=""
           defaultSize={defaultLayout[1]}
-          minSize={30}
+          minSize={10}
         >
+          {/* <div>
+            <PlanDisplay
+              plan={
+                displayPlans?.find((item) => item.id === selectedPlan?.id) ||
+                null
+              }
+            />
+          </div> */}
           <div className="hidden md:block">
             <PlanDisplay
               plan={
@@ -137,18 +151,18 @@ export function PlanView({
               }
             />
           </div>
-          <div className="block absolute top-0 left-0 w-full md:hidden">
-            <div className="h-screen flex flex-col mt-[40%]">
-              <PlanDisplay
-                plan={
-                  displayPlans?.find((item) => item.id === selectedPlan?.id) ||
-                  null
-                }
-              />
-            </div>
-          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
+
+      <div className="block bg-background  absolute top-[90%] left-0 w-full md:hidden">
+        <div className="h-screen flex flex-col">
+          <PlanDisplay
+            plan={
+              displayPlans?.find((item) => item.id === selectedPlan?.id) || null
+            }
+          />
+        </div>
+      </div>
     </TooltipProvider>
   );
 }

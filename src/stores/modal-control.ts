@@ -6,6 +6,9 @@ interface StoreProps {
 
   showCalendar: boolean;
   setShowCalendar: (show: boolean) => void;
+
+  showPDF: boolean;
+  setShowPDF: (show: boolean) => void;
 }
 
 export const useModalStore = create<StoreProps>((set) => ({
@@ -14,4 +17,7 @@ export const useModalStore = create<StoreProps>((set) => ({
 
   showCalendar: false,
   setShowCalendar: (show: boolean) => set(() => ({ showCalendar: show })),
+
+  showPDF: false,
+  setShowPDF: (show: boolean) => set(() => ({ showPDF: show })),
 }));
