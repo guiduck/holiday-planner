@@ -18,6 +18,6 @@ export const useModalStore = create<StoreProps>((set) => ({
   showCalendar: false,
   setShowCalendar: (show: boolean) => set(() => ({ showCalendar: show })),
 
-  showPDF: false,
+  showPDF: true,
   setShowPDF: (show: boolean) => set(() => ({ showPDF: show })),
 }));

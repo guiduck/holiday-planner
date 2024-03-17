@@ -1,5 +1,6 @@
 import { Alert } from "@/components/Alert";
 import { CalendarModal } from "@/components/CalendarModal";
+import { PDFModal } from "@/components/ModalPDF";
 import { PlanView } from "@/components/PlanView";
 import getDateCookie from "@/lib/actions/get-Date";
 import { getPlans } from "@/lib/actions/get-Plans";
@@ -15,6 +16,7 @@ export default async function Home() {
     <main className="flex min flex-col h-full items-center justify-between p-24">
       <CalendarModal />
       <Alert {...errorObj} />
+      {/* <PDFModal /> */}
       <PlanView
         plans={plans ?? []}
         currentDate={currentDate}

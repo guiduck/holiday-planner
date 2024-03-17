@@ -11,8 +11,9 @@ import {
 } from "../ui/card";
 import { CircleX } from "lucide-react";
 import { Button } from "../ui/button";
+import View from "@/app/@pdfView/page";
 
-export function CalendarModal() {
+export function PDFModal() {
   const { showPDF, setShowPDF } = useModalStore();
 
   if (!showPDF) return undefined;
@@ -30,13 +31,15 @@ export function CalendarModal() {
             <CircleX className="h-6 w-6 absolute right-3 top-2" />
           </button>
           <CardHeader>
-            <CardTitle>Pick a date</CardTitle>
+            <CardTitle>DOCUMENT</CardTitle>
             <CardDescription>
               What are you planning for your next holiday?
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="w-full flex justify-center items-center"></div>
+            <div className="w-full flex justify-center items-center">
+              <View />
+            </div>
           </CardContent>
           <CardFooter className="justify-between space-x-2">
             <Button type="submit" onClick={finish}>

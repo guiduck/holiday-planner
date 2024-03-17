@@ -5,7 +5,7 @@ import { Badge } from "../ui/badge";
 import { Clock, MapPin } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PDFDocument } from "@/app/pdf/pdf-document";
+import { PDFDocument } from "@/app/@pdf/pdf-document";
 import { Separator } from "../ui/separator";
 import setPlanIdCookie from "@/lib/actions/set-PlanId";
 
