@@ -26,6 +26,11 @@
     --radius: 0.5rem;
   }
 
+  iframe {
+    width: 100vw;
+    height: 100vh;
+  }
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;

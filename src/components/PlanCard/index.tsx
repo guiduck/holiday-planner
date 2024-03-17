@@ -6,6 +6,8 @@ import { Clock, MapPin } from "lucide-react";
 import { ComponentProps } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import setPlanIdCookie from "@/lib/actions/setPlanId";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDocument } from "@/app/pdf/pdf-document";
 
 interface PlanCardProps {
   plan?: PlanType;
@@ -22,7 +24,8 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
     <button
       className={cn(
         "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-        selectedPlan?.id === plan?.id && "bg-muted"
+        selectedPlan?.id === plan?.id && "bg-muted",
+        `${plan?.archived && "bg-muted opacity-70"}`
       )}
       onClick={async () => {
         const params = new URLSearchParams(searchParams);
@@ -38,30 +41,36 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
           selected = undefined;
           params.delete("planId");
         }
-        // selected = undefined;
+
         replace(`${pathname}?${params.toString()}`);
         return setSelectedPlan(selected);
       }}
     >
       <div className="flex w-full flex-col gap-1">
-        <div className="flex items-center">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center  gap-2">
             <div className="font-semibold">{plan?.title}</div>
-            {!plan?.archive && (
+            {!plan?.archived && (
               <span className="flex h-2 w-2 rounded-full bg-blue-600" />
             )}
           </div>
+          {plan?.archived && (
+            <Badge className="text-[0.7rem] p-0 px-1.5 gap-1" variant="default">
+              <Clock className="h-4 w-4" />
+              archived
+            </Badge>
+          )}
         </div>
         <p className="line-clamp-2 text-xs text-muted-foreground">
           {plan?.description?.substring(0, 300)}
         </p>
 
         <div className="flex items-center gap-2">
-          {plan?.participants.map((label, index) => (
+          {plan?.participants.map((label) => (
             <Badge
               className="text-[0.7rem] p-0 px-1.5 gap-1"
               key={label}
-              variant={getBadgeVariantFromIndex(index + 1)}
+              variant="outline"
             >
               <Clock className="h-4 w-4" />
               {label}
@@ -69,35 +78,30 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
           ))}
         </div>
       </div>
-
-      {plan?.locations.length ? (
-        <div className="flex items-center gap-2">
-          {plan?.locations.map((label, index) => (
-            <Badge
-              className="text-[0.7rem] p-0 px-1.5 gap-1"
-              key={label}
-              variant={getBadgeVariantFromIndex(index + 1)}
-            >
-              <MapPin className="h-4 w-4" />
-              {label}
-            </Badge>
-          ))}
-        </div>
-      ) : null}
+      <div className="w-full flex justify-between items-center">
+        {plan?.locations.length ? (
+          <div className="flex items-center gap-2">
+            {plan?.locations.map((label) => (
+              <Badge
+                className="text-[0.7rem] p-0 px-1.5 gap-1"
+                key={label}
+                variant="secondary"
+              >
+                <MapPin className="h-4 w-4" />
+                {label}
+              </Badge>
+            ))}
+          </div>
+        ) : null}
+        <PDFDownloadLink
+          document={<PDFDocument plan={plan} />}
+          fileName="somename.pdf"
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading document..." : "Download PDF"
+          }
+        </PDFDownloadLink>
+      </div>
     </button>
   );
-}
-
-function getBadgeVariantFromIndex(
-  index: number
-): ComponentProps<typeof Badge>["variant"] {
-  if (index !== 0 && index % 2 === 0) {
-    return "default";
-  }
-
-  if (index !== 0 && index % 3 === 0) {
-    return "outline";
-  }
-
-  return "secondary";
 }

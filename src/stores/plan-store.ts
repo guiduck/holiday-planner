@@ -5,7 +5,7 @@ interface StoreProps {
   selectedPlan?: PlanType;
   setSelectedPlan: (plan?: PlanType) => void;
 
-  displayPlans?: PlanType[];
+  displayPlans: PlanType[];
   setDisplayPlans: (plans?: PlanType[]) => void;
 }
 
@@ -13,6 +13,6 @@ export const usePlansStore = create<StoreProps>((set) => ({
   selectedPlan: undefined,
   setSelectedPlan: (plan?: PlanType) => set(() => ({ selectedPlan: plan })),
 
-  displayPlans: undefined,
+  displayPlans: [],
   setDisplayPlans: (plans?: PlanType[]) => set(() => ({ displayPlans: plans })),
 }));

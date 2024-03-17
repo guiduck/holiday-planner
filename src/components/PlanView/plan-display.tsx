@@ -13,6 +13,7 @@ import { Spinner } from "../Spinner";
 import CalendarButton from "./calendar-button";
 import PlanSelected from "./plan-selected";
 import { useDateStore } from "@/stores/date-store";
+import archivePlan from "@/lib/actions/archivePlan";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
@@ -38,7 +39,12 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!plan}>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={!plan}
+                onClick={async () => await archivePlan(plan?.id)}
+              >
                 {pending ? (
                   <Spinner />
                 ) : (
@@ -49,7 +55,9 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                 )}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Archive</TooltipContent>
+            <TooltipContent>
+              {plan?.archived ? "Unarchive" : "Archive"}
+            </TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -61,10 +69,10 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                 onClick={async () => await deletePlan(plan?.id)}
               >
                 <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Move to trash</span>
+                <span className="sr-only">Delete permanently</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Move to trash</TooltipContent>
+            <TooltipContent>Delete permanently</TooltipContent>
           </Tooltip>
           <Separator orientation="vertical" className="mx-1 h-6" />
         </div>

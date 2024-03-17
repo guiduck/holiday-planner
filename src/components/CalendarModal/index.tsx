@@ -17,10 +17,16 @@ import { Button } from "../ui/button";
 import setDateCookie from "@/lib/actions/setDate";
 
 export function CalendarModal() {
-  const { showCalendar, setShowCalendar } = useModalStore();
+  const { showCalendar, setShowCalendar, setShowAddPlan } = useModalStore();
   const { dateParam, setDateParam } = useDateStore();
 
   if (!showCalendar) return null;
+
+  const finish = async () => {
+    setShowCalendar(false);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setShowAddPlan(true);
+  };
 
   return (
     <div className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-50">
@@ -65,7 +71,7 @@ export function CalendarModal() {
               </PopoverContent>
             </CardContent>
             <CardFooter className="justify-between space-x-2">
-              <Button type="submit" onClick={() => setShowCalendar(false)}>
+              <Button type="submit" onClick={finish}>
                 Okay
               </Button>
             </CardFooter>

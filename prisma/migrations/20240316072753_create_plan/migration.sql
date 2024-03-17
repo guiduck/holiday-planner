@@ -6,6 +6,7 @@ CREATE TABLE "Plan" (
     "date" TEXT NOT NULL,
     "locations" TEXT[],
     "participants" TEXT[],
+    "archived" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

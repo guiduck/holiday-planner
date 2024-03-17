@@ -35,8 +35,11 @@ export function PlanView({
   const { selectedPlan, setDisplayPlans, displayPlans } = usePlansStore();
 
   React.useEffect(() => {
-    setDisplayPlans(plans);
-  }, []);
+    console.log("plans", plans);
+    if (plans.length > 0) {
+      setDisplayPlans(plans);
+    }
+  }, [plans]);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -98,28 +101,19 @@ export function PlanView({
             </div>
 
             <TabsContent value="all" className="m-0">
-              <PlanList
-                items={displayPlans as PlanType[]}
-                selectedPlan={selectedPlan}
-              />
+              <PlanList items={displayPlans} selectedPlan={selectedPlan} />
             </TabsContent>
 
             <TabsContent value="unread" className="m-0">
               <PlanList
-                items={
-                  displayPlans?.filter((item) => !item.archive) as PlanType[]
-                }
+                items={displayPlans.filter((item) => item.archived)}
                 selectedPlan={selectedPlan}
               />
             </TabsContent>
 
             <TabsContent value="date" className="m-0">
               <PlanList
-                items={
-                  displayPlans?.filter(
-                    (item) => item.date === currentDate
-                  ) as PlanType[]
-                }
+                items={displayPlans.filter((item) => item.date === currentDate)}
                 selectedPlan={selectedPlan}
               />
             </TabsContent>

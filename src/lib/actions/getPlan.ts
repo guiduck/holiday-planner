@@ -4,10 +4,10 @@ import prisma from "../prisma";
 import { cookies, headers } from "next/headers";
 
 export default async function getPlanById() {
-  const url = new URL(headers().get("x-url")!);
+  // const url = new URL(headers().get("x-url")!);
   //   const searchParams = url.searchParams;
 
-  console.log(url);
+  // console.log(url);
   //   const { planId } = searchParams;
   const planId = cookies().get("planId")?.value;
 

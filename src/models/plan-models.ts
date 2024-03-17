@@ -5,7 +5,7 @@ export interface PlanType {
   date: string;
   locations: string[];
   participants: string[];
-  archive?: boolean;
+  archived?: boolean;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
