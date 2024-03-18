@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache";
 
 export default async function deletePlan(planId?: string) {
   if (!planId) {
-    return { message: "Missing required data" };
+    return { message: "error", data: "Missing required data" };
   }
 
   try {
@@ -15,7 +15,8 @@ export default async function deletePlan(planId?: string) {
 
     if (!validationResult.success) {
       return {
-        message: "Validation error: " + validationResult.error?.message,
+        message: "error",
+        data: "Validation error: " + validationResult.error?.message,
       };
     }
 
@@ -26,7 +27,7 @@ export default async function deletePlan(planId?: string) {
     });
 
     if (!plan) {
-      return { message: "Plan not found" };
+      return { message: "error", data: "Plan not found" };
     }
 
     await prisma.plan.delete({
@@ -36,13 +37,14 @@ export default async function deletePlan(planId?: string) {
     });
 
     const response = {
-      message: "plan deleted",
+      message: "success",
+      data: "plan deleted",
     };
 
     revalidateTag("get-plans");
 
     return response;
   } catch (error) {
-    return { message: "error", data: error };
+    return { message: "error", data: JSON.stringify(error) };
   }
 }

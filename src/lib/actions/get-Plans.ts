@@ -20,8 +20,8 @@ export async function getPlans() {
       plans = await prisma.plan.findMany();
     }
 
-    return plans;
+    return { message: "success", data: plans };
   } catch (error) {
-    throw new Error("error: " + JSON.stringify(error));
+    return { message: "error", data: "Failed to get plans from database." };
   }
 }

@@ -16,8 +16,12 @@ interface PlanListProps {
 }
 
 export function PlanList({ items, selectedPlan }: Readonly<PlanListProps>) {
+  //TODO: descobrir pq altura n aplica
   return (
-    <ScrollArea className="h-screen">
+    <ScrollArea
+      className="!max-h-[650px] h-screen"
+      // style={{ maxHeight: "650px" }}
+    >
       <div className="flex flex-col gap-2 p-4 pt-0">
         {groupPlansByDate(items)?.map((plans, index) => {
           return (

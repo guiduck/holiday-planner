@@ -3,8 +3,6 @@ import { cookies } from "next/headers";
 import { formatDate } from "../utils/formatDate";
 
 export const setDateCookie = async (date: Date) => {
-  //   cookies().set("date", date.getDate().toString());
-
   cookies().set({
     name: "date",
     value: formatDate(date),

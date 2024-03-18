@@ -32,7 +32,7 @@ export function CalendarModal() {
     <div className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-50">
       <div className="absolute w-screen h-screen top-0 left-0 bg-background opacity-40 backdrop-filter backdrop-grayscale backdrop-blur-md backdrop-contrast-200 "></div>
       <Popover>
-        <Card className="absolute min-h-[250px] w-screen bottom-0 mt-[-200px] border-2 border-bg-primary left-0 rounded-tl-2 rounded-tr-2 rounded-br-none rounded-bl-none md:relative md:rounded-md bg-background md:w-[500px]">
+        <Card className="absolute min-h-[250px] w-[calc(100%-1rem)] bottom-0 mt-[-200px] border-2 border-bg-primary left-0 rounded-tl-2 rounded-tr-2 rounded-br-none rounded-bl-none md:relative md:rounded-md bg-background md:w-[500px]">
           <div className="relative">
             <button onClick={() => setShowCalendar(false)}>
               <CircleX className="h-6 w-6 absolute right-3 top-2" />

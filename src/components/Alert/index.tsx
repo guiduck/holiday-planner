@@ -16,10 +16,13 @@ interface AlertProps {
   type?: "success" | "error" | "neutral";
 }
 
-export function Alert({ show, message, time, type }: Readonly<AlertProps>) {
+export function Alert({
+  show,
+  message,
+  time = 5000,
+  type = "error",
+}: Readonly<AlertProps>) {
   const { setAlertData, alertData } = useAlertStore();
-
-  console.log({ show, message, time, type });
 
   useEffect(() => {
     if (show) {
@@ -34,11 +37,18 @@ export function Alert({ show, message, time, type }: Readonly<AlertProps>) {
   }, alertData.time);
 
   return (
-    <AlertUi variant="destructive">
+    <AlertUi
+      className={`absolute top-0 right-0 md:max-w-[350px] max-h-[200px] ${
+        alertData.type === "success" ? "border-green-800" : ""
+      }`}
+      variant={alertData.type === "success" ? "default" : "destructive"}
+    >
       {alertData.type === "success" && <CircleCheckBig className="h-4 w-4" />}
       {alertData.type === "error" && <AlertCircle className="h-4 w-4" />}
       <AlertTitle>{alertData.type}</AlertTitle>
-      <AlertDescription>{alertData.message}</AlertDescription>
+      <AlertDescription className="whitespace-nowrap text-ellipsis">
+        {alertData.message}
+      </AlertDescription>
     </AlertUi>
   );
 }

@@ -13,13 +13,26 @@ import {
 import dynamic from "next/dynamic";
 import { Spinner } from "../Spinner";
 import handleCreatePlan from "@/lib/actions/create-Plan";
+import { useAlertStore } from "@/stores/snackbar-store";
 const CancelButton = dynamic(() => import("./cancel-button"), {
   loading: () => <Spinner />,
 });
 
 export function AddPlan() {
+  const { setAlertData } = useAlertStore();
+
+  async function createPlan(formData: FormData) {
+    const { message, data } = await handleCreatePlan(formData);
+    setAlertData({
+      show: true,
+      message: message === "success" ? "New plan created!" : (data as string),
+      time: 5000,
+      type: message === "success" ? "success" : "error",
+    });
+  }
+
   return (
-    <form action={async (formData) => handleCreatePlan(formData)} method="POST">
+    <form action={async (formData) => createPlan(formData)} method="POST">
       <Card className="rounded-none border-none w-full">
         <CardHeader>
           <CardTitle>Create a new Plan</CardTitle>

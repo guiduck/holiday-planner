@@ -5,7 +5,7 @@ import { Badge } from "../ui/badge";
 import { Clock, MapPin } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PDFDocument } from "@/app/@pdf/pdf-document";
+import { PDFDocument } from "@/app/pdf/pdf-document";
 import { Separator } from "../ui/separator";
 import setPlanIdCookie from "@/lib/actions/set-PlanId";
 
@@ -23,7 +23,7 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
   return (
     <button
       className={cn(
-        "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+        "min-w-[300px] flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
         selectedPlan?.id === plan?.id && "bg-muted",
         `${plan?.archived && "bg-muted opacity-70"}`
       )}
@@ -93,17 +93,21 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
             ))}
           </div>
         ) : null}
-        <div className="flex">
+        <div className="flex items-center gap-2">
           <PDFDownloadLink
             document={<PDFDocument plan={plan} />}
             fileName="somename.pdf"
           >
             {({ blob, url, loading, error }) =>
-              loading ? "Loading document..." : "Download PDF"
+              loading ? (
+                <p className="text-xs">Loading document...</p>
+              ) : (
+                <p className="text-xs">Download PDF</p>
+              )
             }
           </PDFDownloadLink>
           <Separator orientation="vertical" className="mx-1 h-6" />
-          <p className="min-w-[85px]">
+          <p className="text-xs text-end">
             {selectedPlan?.id !== plan?.id ? "See details" : "Close details"}
           </p>
         </div>

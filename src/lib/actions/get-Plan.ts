@@ -26,8 +26,11 @@ export default async function getPlanById() {
       return;
     }
 
-    return plan;
+    return { message: "success", data: plan };
   } catch (error) {
-    throw new Error(`error: ${JSON.stringify(error)}`);
+    return {
+      message: "error",
+      data: "Failed to get plan using id from database.",
+    };
   }
 }

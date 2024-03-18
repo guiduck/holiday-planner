@@ -15,8 +15,7 @@ import { PlanList } from "./plan-list";
 import { usePlansStore } from "@/stores/plan-store";
 import { Search } from "../Search";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
-import { PlanDisplay } from "../@PlanDisplay/page";
-
+import { PlanDisplay } from "../PlanDisplay";
 interface PlanProps {
   plans: PlanType[];
   defaultLayout: number[] | undefined;
@@ -37,7 +36,6 @@ export function PlanView({
   const { width } = useWindowDimensions();
 
   React.useEffect(() => {
-    console.log("plans", plans);
     if (plans.length > 0) {
       setDisplayPlans(plans);
     }
@@ -71,6 +69,7 @@ export function PlanView({
           className={cn(
             isCollapsed &&
               "min-w-[50px] transition-all duration-300 ease-in-out"
+            // "min-w-[50px] transition-all duration-300 ease-in-out overflow-y-scroll"
           )}
         >
           <Tabs defaultValue="all">
@@ -144,23 +143,14 @@ export function PlanView({
             />
           </div> */}
           <div className="hidden md:block">
-            <PlanDisplay
-              plan={
-                displayPlans?.find((item) => item.id === selectedPlan?.id) ||
-                null
-              }
-            />
+            <PlanDisplay plan={selectedPlan || null} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
 
       <div className="block bg-background  absolute top-[90%] left-0 w-full md:hidden">
         <div className="h-screen flex flex-col">
-          <PlanDisplay
-            plan={
-              displayPlans?.find((item) => item.id === selectedPlan?.id) || null
-            }
-          />
+          <PlanDisplay plan={selectedPlan || null} />
         </div>
       </div>
     </TooltipProvider>

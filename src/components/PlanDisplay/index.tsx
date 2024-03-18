@@ -1,20 +1,20 @@
 "use client";
-import { Archive, Trash2 } from "lucide-react";
-
+import { Archive } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { PlanType } from "@/models/plan-models";
 import { useModalStore } from "@/stores/modal-control";
 import { AddPlan } from "../AddPlanPanel";
-import deletePlan from "@/lib/actions/delete-Plan";
 import { useFormStatus } from "react-dom";
 import { Spinner } from "../Spinner";
 import { useDateStore } from "@/stores/date-store";
 import { usePlansStore } from "@/stores/plan-store";
 import archivePlan from "@/lib/actions/archive-Plan";
 import CalendarButton from "../PlanView/calendar-button";
-import PlanSelected from "../PlanView/plan-selected";
+import PlanSelected from "../PlanSelected";
+import DeleteButton from "./delete-button";
+import { useAlertStore } from "@/stores/snackbar-store";
 
 interface PlanDisplayProps {
   plan: PlanType | null;
@@ -25,9 +25,20 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
   const { showAddPlan } = useModalStore();
   const { dateFormated } = useDateStore();
   const { selectedPlan } = usePlansStore();
+  const { setAlertData } = useAlertStore();
 
   //TODO: implement pending status on other components
   const { pending } = useFormStatus();
+
+  const handleArchivePlan = async () => {
+    const result = await archivePlan(plan?.id);
+    setAlertData({
+      show: true,
+      message: result.data,
+      time: 5000,
+      type: result.message === "success" ? "success" : "error",
+    });
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -41,6 +52,7 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
         //   <Separator />
         // </div>
       )}
+
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <Tooltip>
@@ -49,7 +61,7 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                 variant="ghost"
                 size="icon"
                 disabled={!plan}
-                onClick={async () => await archivePlan(plan?.id)}
+                onClick={async () => await handleArchivePlan()}
               >
                 {pending ? (
                   <Spinner className="h-4 w-4" />
@@ -61,6 +73,7 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
                 )}
               </Button>
             </TooltipTrigger>
+
             <TooltipContent>
               {plan?.archived ? "Unarchive" : "Archive"}
             </TooltipContent>
@@ -68,18 +81,12 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!plan}
-                onClick={async () => await deletePlan(plan?.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Delete permanently</span>
-              </Button>
+              <DeleteButton plan={plan} />
             </TooltipTrigger>
+
             <TooltipContent>Delete permanently</TooltipContent>
           </Tooltip>
+
           <Separator orientation="vertical" className="mx-1 h-6" />
         </div>
 
@@ -91,9 +98,11 @@ export function PlanDisplay({ plan }: Readonly<PlanDisplayProps>) {
           )}
         </div>
       </div>
+
       <h1 className="text-2xl font-bold p-8 text-center">
         {selectedPlan?.date ?? dateFormated}
       </h1>
+
       <PlanSelected
         plan={plan as PlanType}
         dateFormated={dateFormated as string}
