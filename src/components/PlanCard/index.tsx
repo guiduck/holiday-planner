@@ -1,8 +1,17 @@
+"use client";
+
 import { cn } from "@/lib/utils/cn";
 import { PlanType } from "@/models/plan-models";
 import { usePlansStore } from "@/stores/plan-store";
 import { Badge } from "../ui/badge";
-import { Clock, MapPin } from "lucide-react";
+import {
+  CircleMinus,
+  CirclePlus,
+  Download,
+  MapPin,
+  User,
+  Users,
+} from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFDocument } from "@/app/pdf/pdf-document";
@@ -23,7 +32,7 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
   return (
     <button
       className={cn(
-        "min-w-[300px] flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
+        "min-w-[300px] flex flex-col p-6 px-4 items-start gap-4 rounded-lg border text-left text-sm transition-all hover:bg-accent",
         selectedPlan?.id === plan?.id && "bg-muted",
         `${plan?.archived && "bg-muted opacity-70"}`
       )}
@@ -54,45 +63,54 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
               <span className="flex h-2 w-2 rounded-full bg-blue-600" />
             )}
           </div>
+
           {plan?.archived && (
-            <Badge className="text-[0.7rem] p-0 px-1.5 gap-1" variant="default">
-              <Clock className="h-4 w-4" />
+            <Badge
+              className="text-[0.7rem] p-0 px-1.5 gap-1 rounded-sm"
+              variant="default"
+            >
               archived
             </Badge>
           )}
         </div>
-        <p className="line-clamp-2 text-xs text-muted-foreground">
-          {plan?.description?.substring(0, 300)}
-        </p>
 
-        <div className="flex items-center gap-2">
-          {plan?.participants.map((label) => (
+        <Separator orientation="horizontal" className="my-2" />
+
+        <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <Badge
-              className="text-[0.7rem] p-0 px-1.5 gap-1"
-              key={label}
+              className="text-[0.7rem] p-0 px-1.5 gap-1 bg-accent rounded-sm"
               variant="outline"
             >
-              <Clock className="h-4 w-4" />
-              {label}
+              {plan?.participants && plan?.participants?.length > 1 ? (
+                <Users className="h-4 w-4" />
+              ) : (
+                <User className="h-4 w-4" />
+              )}
+              {plan?.participants.slice(0, 3).join(", ")}
+              {(plan?.participants?.length ?? 0) > 4 ? "..." : null}
             </Badge>
-          ))}
-        </div>
-      </div>
-      <div className="w-full flex justify-between items-center">
-        {plan?.locations.length ? (
-          <div className="flex items-center gap-2">
-            {plan?.locations.map((label) => (
+          </div>
+
+          {plan?.locations.length ? (
+            <div className="flex items-center gap-4">
               <Badge
-                className="text-[0.7rem] p-0 px-1.5 gap-1"
-                key={label}
+                className="text-[0.7rem] p-0 px-1.5 gap-1 bg-primary-foreground text-accent rounded-sm"
                 variant="secondary"
               >
-                <MapPin className="h-4 w-4" />
-                {label}
+                <MapPin className="h-4 w-4 text-accent" />
+                {plan?.locations.slice(0, 3).join(", ")}
+                {plan?.locations.length > 4 ? "..." : null}
               </Badge>
-            ))}
-          </div>
-        ) : null}
+            </div>
+          ) : null}
+        </div>
+
+        <p className="line-clamp-2 text-xs mt-2 text-muted-foreground">
+          {plan?.description?.substring(0, 300)}
+        </p>
+      </div>
+      <div className="w-full flex justify-end items-center">
         <div className="flex items-center gap-2">
           <PDFDownloadLink
             document={<PDFDocument plan={plan} />}
@@ -102,13 +120,26 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
               loading ? (
                 <p className="text-xs">Loading document...</p>
               ) : (
-                <p className="text-xs">Download PDF</p>
+                <span className="text-xs flex gap-2">
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </span>
               )
             }
           </PDFDownloadLink>
           <Separator orientation="vertical" className="mx-1 h-6" />
-          <p className="text-xs text-end">
-            {selectedPlan?.id !== plan?.id ? "See details" : "Close details"}
+          <p className="text-xs text-end w-[97px]">
+            {selectedPlan?.id !== plan?.id ? (
+              <span className="flex gap-2 items-center">
+                <CirclePlus className="w-4 h-4" />
+                See details
+              </span>
+            ) : (
+              <span className="flex gap-2 items-center">
+                <CircleMinus className="w-4 h-4" />
+                Close details
+              </span>
+            )}
           </p>
         </div>
       </div>

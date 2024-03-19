@@ -63,6 +63,7 @@ export function CalendarModal() {
                   mode="single"
                   selected={dateParam}
                   onDayClick={async (event) => {
+                    console.log(event);
                     await setDateCookie(event);
                   }}
                   onSelect={(event) => setDateParam(event as Date)}

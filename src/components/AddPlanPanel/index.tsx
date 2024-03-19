@@ -1,3 +1,5 @@
+"use client";
+
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -7,22 +9,36 @@ import {
   CardContent,
   CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "../ui/card";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Spinner";
-import handleCreatePlan from "@/lib/actions/create-Plan";
+import handleCreatePlan, { PlanFormType } from "@/lib/actions/create-Plan";
 import { useAlertStore } from "@/stores/snackbar-store";
+import { DatePicker } from "../ui/datepicker";
+import { cn } from "@/lib/utils/cn";
+import { useForm } from "react-hook-form";
+import { Separator } from "../ui/separator";
+
 const CancelButton = dynamic(() => import("./cancel-button"), {
   loading: () => <Spinner />,
 });
 
-export function AddPlan() {
+export function AddPlan({ forDrawer = false }: { forDrawer?: boolean }) {
   const { setAlertData } = useAlertStore();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PlanFormType>();
 
-  async function createPlan(formData: FormData) {
-    const { message, data } = await handleCreatePlan(formData);
+  async function createPlan(formData: PlanFormType) {
+    const parsedData = {
+      ...formData,
+      locations: formData.locations.toString().split(","),
+      participants: formData.participants.toString().split(","),
+    };
+    const { message, data } = await handleCreatePlan(parsedData);
     setAlertData({
       show: true,
       message: message === "success" ? "New plan created!" : (data as string),
@@ -32,49 +48,82 @@ export function AddPlan() {
   }
 
   return (
-    <form action={async (formData) => createPlan(formData)} method="POST">
-      <Card className="rounded-none border-none w-full">
-        <CardHeader>
-          <CardTitle>Create a new Plan</CardTitle>
-          <CardDescription>
-            Where would you like to go? Who are you going with?
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-6">
-          <div className="grid gap-2">
-            <Label htmlFor="title">Title</Label>
-            <Input id="title" name="title" placeholder="Your plan name" />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              placeholder="What will you be doing?"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="locations">Locations</Label>
-            <Input
-              id="locations"
-              name="locations"
-              placeholder="ex: Brasilia, Portugal, ..."
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="participants">participants</Label>
-            <Input
-              id="participants"
-              name="participants"
-              placeholder="ex: Alex, Vitor, ..."
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="justify-between space-x-2">
-          <CancelButton />
-          <Button type="submit">Submit</Button>
-        </CardFooter>
-      </Card>
-    </form>
+    <div>
+      <div className="flex flex-col items-center p-2 pl-0 pt-10 pb-6 md:p-2">
+        <CardTitle>Create a new Plan</CardTitle>
+        <CardDescription>
+          Where would you like to go? Who are you going with?
+        </CardDescription>
+      </div>
+      <Separator orientation="horizontal" />
+      <form className="h-full border-b-0" onSubmit={handleSubmit(createPlan)}>
+        <Card
+          className={cn(
+            "rounded-none border-none w-full",
+            forDrawer && "bg-background"
+          )}
+        >
+          <CardContent className="grid gap-6 pt-10">
+            <div className="grid gap-2">
+              <Label htmlFor="date">When will it happen?</Label>
+              <DatePicker />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="title">What am I doing?</Label>
+              <Input
+                id="title"
+                minLength={3}
+                placeholder="Your plan name"
+                {...register("title", { required: true })}
+              />
+              {errors.title && <span>This field is required</span>}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">What are my plans?</Label>
+              <Textarea
+                id="description"
+                minLength={50}
+                placeholder="What will you be doing?"
+                {...register("description", { required: true })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex gap-2 items-center ">
+                <Label htmlFor="locations">Where am I going?</Label>
+                <p className="text-xs text-muted-background opacity-50">
+                  (Separate locations with commas)
+                </p>
+              </div>
+              <Input
+                id="locations"
+                minLength={3}
+                placeholder="ex: Brasilia, Portugal, ..."
+                {...register("locations", { required: true })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex gap-2 items-center ">
+                <Label htmlFor="participants">Who is joining me?</Label>
+                <p className="text-xs text-muted-background opacity-50">
+                  (Separate participants with commas)
+                </p>
+              </div>
+              <Input
+                id="participants"
+                minLength={3}
+                placeholder="ex: Alex, Vitor, ..."
+                {...register("participants", { required: true })}
+              />
+            </div>
+          </CardContent>
+          <CardFooter className="justify-between space-x-2">
+            {!forDrawer && <CancelButton />}
+            <Button type="submit">Submit</Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </div>
   );
 }
+
+export default AddPlan;

@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontFamily: "Inter",
     width: "100%",
+    height: "100%",
   },
   section: {
     margin: 10,
@@ -37,26 +38,16 @@ export const PDFDocument = ({ plan }: { plan?: PlanType }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-          <Text wrap={false} style={{ alignSelf: "flex-end" }}>
-            Goodbye,
-            world!hgdkljfhsalhgfljadhsgflhasdlhfgsaljdhgflhasgflhgasdl;hfg;aksdjgf;kjsdahf;kjhasd;kjhf;kjashdf;kjhasd;kjfhjks;adhfkjhsadk;jfhaskjdhfkjsahdfkjhsadkj;hfkjsdhfkjhasd;kjhfkjsadhfkjhsda;kjh;
-          </Text>
-        </View>
-        <View style={styles.section}>
           <Text>{plan?.title}</Text>
         </View>
-        <View style={styles.section}>
+        <View wrap={false} style={styles.section}>
           <Text>{plan?.description}</Text>
         </View>
         <View style={styles.section}>
-          {plan?.locations.map((location) => (
-            <Text key={location}>{location}</Text>
-          ))}
+          <Text>{plan?.locations.join(", ")}</Text>
         </View>
         <View style={styles.section}>
-          {plan?.participants.map((participant) => (
-            <Text key={participant}>{participant}</Text>
-          ))}
+          <Text>{plan?.participants.join(", ")}</Text>
         </View>
         <View style={styles.section}>
           <Image src="/vercel.svg" />

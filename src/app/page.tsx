@@ -16,7 +16,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min flex-col h-full items-center justify-between p-24">
+    <main className="flex min flex-col h-full items-center justify-between p-10 h-screen">
       {(planResponse.message === "error" ||
         dateResponse?.message === "error") && (
         <Alert

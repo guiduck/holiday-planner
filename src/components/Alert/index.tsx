@@ -38,7 +38,7 @@ export function Alert({
 
   return (
     <AlertUi
-      className={`absolute top-0 right-0 md:max-w-[350px] max-h-[200px] ${
+      className={`absolute z-[100000] top-0 right-0 md:max-w-[350px] max-h-[200px] ${
         alertData.type === "success" ? "border-green-800" : ""
       }`}
       variant={alertData.type === "success" ? "default" : "destructive"}

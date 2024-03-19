@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 @layer base {
+  .bg-pattern {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--b1),
+      var(--b1) 13px,
+      var(--b2) 13px,
+      var(--b2) 14px
+    );
+  }
+
   :root {
+    --b1: #040404;
+    --b2: rgba(255 255 0 / 0.04);
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;

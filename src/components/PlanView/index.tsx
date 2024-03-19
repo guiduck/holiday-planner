@@ -15,7 +15,26 @@ import { PlanList } from "./plan-list";
 import { usePlansStore } from "@/stores/plan-store";
 import { Search } from "../Search";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
-import { PlanDisplay } from "../PlanDisplay";
+import { Button } from "../ui/button";
+import { Drawer, DrawerContent } from "../ui/drawer";
+import { useModalStore } from "@/stores/modal-control";
+import dynamic from "next/dynamic";
+import { Spinner } from "../Spinner";
+const AddPlan = dynamic(() => import("../AddPlanPanel"), {
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <Spinner className="w-8 m-auto" />
+    </div>
+  ),
+});
+const PlanDisplay = dynamic(() => import("../PlanDisplay"), {
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <Spinner className="w-8 m-auto" />
+    </div>
+  ),
+});
+
 interface PlanProps {
   plans: PlanType[];
   defaultLayout: number[] | undefined;
@@ -32,14 +51,15 @@ export function PlanView({
   currentDate,
 }: Readonly<PlanProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const { selectedPlan, setDisplayPlans, displayPlans } = usePlansStore();
+  const { selectedPlan, setDisplayPlans, displayPlans, setSelectedPlan } =
+    usePlansStore();
+  const { showAddPlan, setShowAddPlan } = useModalStore();
   const { width } = useWindowDimensions();
 
   React.useEffect(() => {
     if (plans.length > 0) {
       setDisplayPlans(plans);
     }
-    console.log(width);
   }, [plans]);
 
   return (
@@ -52,7 +72,7 @@ export function PlanView({
             sizes
           )}`;
         }}
-        className="fixed md:relative h-full max-h-[800px] items-stretch"
+        className="fixed md:relative h-full max-h-[800px] items-stretch "
       >
         <ResizablePanel
           defaultSize={defaultLayout[0]}
@@ -99,8 +119,28 @@ export function PlanView({
 
             <Separator />
 
-            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <Search plans={plans} />
+            <div className="flex bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60  gap-4">
+              <div className="grow">
+                <Search plans={plans} />
+              </div>
+              {width < 768 && (
+                <div className="md:hidden">
+                  <Drawer
+                    open={!!selectedPlan || showAddPlan}
+                    onClose={() => {
+                      if (showAddPlan) setShowAddPlan(false);
+                      if (selectedPlan) setSelectedPlan(undefined);
+                    }}
+                  >
+                    <Button onClick={() => setShowAddPlan(true)}>
+                      Create Plan
+                    </Button>
+                    <DrawerContent className="md:hidden">
+                      {selectedPlan ? <PlanDisplay /> : <AddPlan forDrawer />}
+                    </DrawerContent>
+                  </Drawer>
+                </div>
+              )}
             </div>
 
             <TabsContent value="all" className="m-0">
@@ -127,32 +167,15 @@ export function PlanView({
           <ResizableHandle withHandle />
         </div>
 
-        {/* <ResizableHandle withHandle /> */}
-
         <ResizablePanel
-          className=""
+          // className="bg-pattern"
+          className="bg-background hidden md:block"
           defaultSize={defaultLayout[1]}
           minSize={10}
         >
-          {/* <div>
-            <PlanDisplay
-              plan={
-                displayPlans?.find((item) => item.id === selectedPlan?.id) ||
-                null
-              }
-            />
-          </div> */}
-          <div className="hidden md:block">
-            <PlanDisplay plan={selectedPlan || null} />
-          </div>
+          <PlanDisplay />
         </ResizablePanel>
       </ResizablePanelGroup>
-
-      <div className="block bg-background  absolute top-[90%] left-0 w-full md:hidden">
-        <div className="h-screen flex flex-col">
-          <PlanDisplay plan={selectedPlan || null} />
-        </div>
-      </div>
     </TooltipProvider>
   );
 }

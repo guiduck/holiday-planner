@@ -16,37 +16,39 @@ interface PlanListProps {
 }
 
 export function PlanList({ items, selectedPlan }: Readonly<PlanListProps>) {
-  //TODO: descobrir pq altura n aplica
+  const groupedPlans = groupPlansByDate(items);
+
   return (
     <ScrollArea className="!max-h-[650px] h-screen">
-      <div className="flex flex-col gap-2 p-4 pt-0">
-        {groupPlansByDate(items)?.map((plans, index) => {
+      <div className="flex flex-col p-4 pt-0">
+        {groupedPlans?.map((plans, index) => {
           return (
-            <div key={`${plans[0].id}1`} className="flex flex-col gap-[1.8rem]">
-              <p
-                className={cn(
-                  `mr-auto mt-[0.9rem] text-[0.9rem] h-7 transition-all hover:text-foreground hover:text-[1rem] items-center justify-center`,
-                  plans.map((p) => p.id).includes(selectedPlan?.id ?? "")
-                    ? "text-foreground text-lg"
-                    : "text-muted-foreground"
-                )}
+            <>
+              <div
+                key={`${plans[0].id}1`}
+                className="flex flex-col gap-[1.8rem]"
               >
-                {plans[0].date}
-              </p>
+                <p
+                  className={cn(
+                    `mr-auto text-[0.9rem] h-7 transition-all hover:text-foreground hover:text-[1rem] items-center justify-center`,
+                    plans.map((p) => p.id).includes(selectedPlan?.id ?? "")
+                      ? "text-foreground text-lg"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {plans[0].date}
+                </p>
 
-              {/* <Separator
-                orientation="vertical"
-                className={`h-[20px] m${index % 2 !== 0 ? "r" : "l"}-auto`}
-              /> */}
-
-              <div className="flex flex-col gap-4">
-                {plans.map((plan) => (
-                  <PlanCard key={plan.id} plan={plan} />
-                ))}
+                <div className="flex flex-col gap-4">
+                  {plans.map((plan) => (
+                    <PlanCard key={plan.id} plan={plan} />
+                  ))}
+                </div>
               </div>
-
-              <Separator orientation="horizontal" className={`mr-auto`} />
-            </div>
+              {index !== groupedPlans.length - 1 && (
+                <Separator orientation="horizontal" className="my-[40px]" />
+              )}
+            </>
           );
         })}
       </div>

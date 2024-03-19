@@ -6,9 +6,9 @@ const InvoicePDF = dynamic(() => import("../pdf"), {
   ssr: false,
 });
 
-const View = () => {
+const View = ({ modal }: { modal?: boolean }) => {
   return (
-    <div className="w-screen h-full">
+    <div className={`w-screen ${modal ? "h-full" : "h-screen"}`}>
       <InvoicePDF />
     </div>
   );

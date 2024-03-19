@@ -9,10 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { CircleX } from "lucide-react";
 import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
+import { X } from "lucide-react";
 const View = dynamic(() => import("@/app/pdfView/page"), {
   loading: () => <p>Loading...</p>,
 });
@@ -36,12 +36,15 @@ export function PDFModal() {
   };
 
   return (
-    <div className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-50">
-      <div className="absolute w-screen h-screen top-0 left-0 bg-background opacity-40 backdrop-filter backdrop-grayscale backdrop-blur-md backdrop-contrast-200 "></div>
-      <Card className="absolute min-h-[250px] w-[calc(100%-1rem)] bottom-0 mt-[-200px] border-2 border-bg-primary left-0 rounded-tl-2 rounded-tr-2 rounded-br-none rounded-bl-none md:relative md:rounded-md bg-background md:w-[500px]">
+    <div className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-20">
+      <div
+        className="absolute w-screen h-screen top-0 left-0 bg-background opacity-40 backdrop-filter backdrop-grayscale backdrop-blur-md backdrop-contrast-200 "
+        onClick={() => setShowPDF(false)}
+      ></div>
+      <Card className="z-[100000] absolute min-h-[250px] w-full bottom-0 mt-[-200px] border-2 border-bg-primary left-0 rounded-tl-2 rounded-tr-2 rounded-br-none rounded-bl-none md:relative md:rounded-md bg-background md:w-[600px]">
         <div className="relative w-full h-full">
           <button onClick={() => setShowPDF(false)}>
-            <CircleX className="h-6 w-6 absolute right-3 top-2" />
+            <X className="h-6 w-6 absolute right-3 top-2 text-muted-foreground" />
           </button>
           <CardHeader>
             <CardTitle>DOCUMENT</CardTitle>
@@ -49,14 +52,14 @@ export function PDFModal() {
               You can click the link to see the full document below.
             </CardDescription>
           </CardHeader>
-          <CardContent className="h-[400px]">
+          <CardContent className="h-[500px] w-full">
             <div className="w-full h-full flex justify-center items-center">
-              <View />
+              <View modal />
             </div>
           </CardContent>
           <CardFooter className="justify-between space-x-2">
             <Button type="submit" onClick={finish}>
-              Okay
+              Confirm
             </Button>
             <a href={getpdfrUrl()} target="_blank">
               <p className="">See full document</p>

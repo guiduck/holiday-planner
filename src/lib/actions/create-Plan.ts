@@ -14,8 +14,16 @@ const createPlanBody = z.object({
   participants: z.array(z.string()),
 });
 
+export type PlanFormType = {
+  date?: string;
+  title: string;
+  description: string;
+  locations: string[];
+  participants: string[];
+};
+
 export const handleCreatePlan = async (
-  formData: FormData
+  formData: PlanFormType
 ): Promise<{ message: string; data: string | PlanType }> => {
   try {
     const dateForm = cookies().get("date")?.value;
@@ -23,27 +31,10 @@ export const handleCreatePlan = async (
       return { message: "error", data: "Date is missing in cookies." };
     }
 
-    const titleForm = formData.get("title");
-    const descriptionForm = formData.get("description");
-    const locationsForm = formData.get("locations")?.toString().split(",");
-    const participantsForm = formData
-      .get("participants")
-      ?.toString()
-      .split(",");
-
-    if (!titleForm || !descriptionForm || !locationsForm || !participantsForm) {
-      return { message: "error", data: "Missing required data" };
-    }
-
-    const body = {
-      title: titleForm.toString(),
-      description: descriptionForm.toString(),
+    const validationResult = createPlanBody.safeParse({
+      ...formData,
       date: dateForm,
-      locations: locationsForm,
-      participants: participantsForm,
-    };
-
-    const validationResult = createPlanBody.safeParse(body);
+    });
 
     if (!validationResult.success) {
       return {
