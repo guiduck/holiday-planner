@@ -22,8 +22,8 @@ import { Spinner } from "../Spinner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import setPlanIdCookie from "@/lib/actions/set-PlanId";
 import { PlanList } from "../PlanList";
-import { getPlans } from "@/lib/actions/get-Plans";
 import { useAlertStore } from "@/stores/alert-store";
+import { getPlansClient } from "@/lib/actions/getPlansClient";
 const AddPlan = dynamic(() => import("../AddPlanPanel"), {
   loading: () => (
     <div className="w-full h-full flex items-center justify-center">
@@ -67,7 +67,7 @@ export function PlanView({
   const searchParams = useSearchParams();
 
   const getPlansData = async () => {
-    const plansResult = await getPlans();
+    const plansResult = await getPlansClient();
 
     if (plansResult.message === "success") {
       const { data: plansData } = plansResult;

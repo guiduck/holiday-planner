@@ -1,11 +1,9 @@
-"use server";
-
-export async function getPlans() {
+export async function getPlansClient() {
   try {
     const URL =
       process.env.NODE_ENV !== "development"
-        ? process.env.URL_PROD
-        : process.env.URL_LOCAL;
+        ? process.env.NEXT_PUBLIC_URL_PROD
+        : process.env.NEXT_PUBLIC_URL_LOCAL;
 
     const response = await fetch(`${URL}/api/plans`, {
       cache: "no-store",
