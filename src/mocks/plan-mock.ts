@@ -1,20 +1,5 @@
 export const mockedPlans = [
   {
-    id: "61c35085-72d7-42b4-8d62-738f700d4b92",
-
-    title: "feriadao com a mari",
-    description: "inte chapada boys",
-    date: "2023-03-25T13:15:00",
-
-    archive: false,
-
-    locations: ["work", "budget"],
-    participants: ["work", "budget"],
-
-    createdAt: "2023-03-10T15:00:00",
-    updatedAt: "2023-02-15T16:30:00",
-  },
-  {
     id: "34c7508a-52b9-4c23-9f9e-8f5a6d9c372f",
     title: "birthday party",
     description: "celebrating my friend's birthday",

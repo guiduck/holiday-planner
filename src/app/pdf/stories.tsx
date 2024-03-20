@@ -12,7 +12,7 @@ const meta = {
   title: "PDF",
   component: Component,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
   argTypes: {
     plan: { control: "object" },
