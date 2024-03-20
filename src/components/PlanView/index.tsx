@@ -44,6 +44,7 @@ interface PlanProps {
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
   currentDate?: string;
+  plans: PlanType[];
 }
 
 export function PlanView({
@@ -51,8 +52,9 @@ export function PlanView({
   defaultCollapsed = false,
   navCollapsedSize,
   currentDate,
+  plans,
 }: Readonly<PlanProps>) {
-  const [plans, setPlans] = React.useState<PlanType[]>([]);
+  const [plansData, setPlansData] = React.useState<PlanType[]>([]);
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
   const { selectedPlan, setDisplayPlans, displayPlans, setSelectedPlan } =
@@ -70,9 +72,9 @@ export function PlanView({
     const plansResult = await getPlansClient();
 
     if (plansResult.message === "success") {
-      const { data: plansData } = plansResult;
+      const { data: newPlans } = plansResult;
       // @ts-ignore
-      setPlans(plansData);
+      setPlansData(newPlans);
     } else {
       setAlertData({
         show: true,
@@ -83,12 +85,14 @@ export function PlanView({
     }
   };
 
-  React.useEffect(() => {
-    getPlansData();
-  }, []);
+  // React.useEffect(() => {
+  //   if (!plans) {
+  //     getPlansData();
+  //   }
+  // }, []);
 
   React.useEffect(() => {
-    if (plans.length > 0) {
+    if (plans && plans.length > 0) {
       setDisplayPlans(plans);
     }
   }, [plans]);

@@ -32,6 +32,7 @@ export default async function Home() {
           currentDate={dateResponse?.data}
           defaultLayout={[40, 60]}
           navCollapsedSize={5}
+          plans={plans}
         />
       </Suspense>
     </main>
