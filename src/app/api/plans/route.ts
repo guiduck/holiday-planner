@@ -7,6 +7,8 @@ export async function GET() {
   try {
     const plans = await prisma.plan.findMany();
 
+    plans[0].description = `test ${Math.random()}`;
+
     const response = {
       message: "success",
       data: plans,
