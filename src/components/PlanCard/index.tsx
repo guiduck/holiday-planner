@@ -32,7 +32,7 @@ export function PlanCard({
     <button
       data-testid={testId}
       className={cn(
-        "min-w-[300px] flex flex-col p-6 px-4 items-start gap-4 rounded-lg border text-left text-sm transition-all hover:bg-accent",
+        "md:min-w-[300px] flex flex-col p-6 px-4 items-start gap-4 rounded-lg border text-left text-sm transition-all hover:bg-accent",
         selectedPlan?.id === plan?.id && "bg-muted",
         `${plan?.archived && "bg-muted opacity-70"}`
       )}
@@ -89,7 +89,7 @@ export function PlanCard({
           ) : null}
         </div>
 
-        <p className="line-clamp-2 text-xs mt-2 text-muted-foreground">
+        <p className="line-clamp-2 text-xs mt-2 text-muted-foreground max-w-[340px]">
           {plan?.description?.substring(0, 300)}
         </p>
       </div>
