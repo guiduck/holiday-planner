@@ -2,9 +2,45 @@ import { Alert } from "@/components/Alert";
 import { PDFModal } from "@/components/PDFModal";
 import { PlanView } from "@/components/PlanView";
 import getDateCookie from "@/lib/actions/get-Date";
-import { getPlans } from "@/lib/actions/get-Plans";
+import { getPlansAction } from "@/lib/actions/get-Plans";
 import { PlanType } from "@/models/plan-models";
 import { Suspense } from "react";
+
+async function getPlans() {
+  try {
+    let plans;
+
+    const URL =
+      process.env.NODE_ENV !== "development"
+        ? process.env.URL_PROD
+        : process.env.URL_LOCAL;
+
+    const response = await fetch(`${URL}/api/plans`, {
+      next: {
+        tags: ["get-plans"],
+      },
+      cache: "no-store",
+    });
+
+    if (response.ok) {
+      plans = (await response.json()).data;
+    }
+
+    if (!plans) {
+      const actionResult = await getPlansAction();
+
+      if (actionResult?.message === "success") {
+        plans = actionResult?.data;
+      } else {
+        return { ...actionResult };
+      }
+    }
+
+    return { message: "success", data: plans };
+  } catch (error) {
+    return { message: "error", data: "Failed to get Plans." };
+  }
+}
 
 export default async function Home() {
   const planResponse = await getPlans();
