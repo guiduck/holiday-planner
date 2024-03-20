@@ -13,9 +13,6 @@ export async function getPlans() {
 
     const response = await fetch(`${URL}/api/plans`, {
       cache: "no-store",
-      next: {
-        tags: ["get-plans"],
-      },
     });
 
     if (response) {
