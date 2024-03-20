@@ -14,6 +14,7 @@ export default async function Home() {
   let plans: PlanType[] = [];
 
   if (planResponse?.message === "success") {
+    //@ts-ignore
     plans = planResponse?.data;
     console.log(plans);
   }

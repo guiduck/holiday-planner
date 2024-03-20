@@ -14,7 +14,8 @@ export async function getPlans() {
 
     if (response.ok) {
       const plans = (await response.json()).data;
-      return { message: "success", data: plans };
+      plans[0].title = `test ${Math.random()}`;
+      return { message: "success", data: [...plans] };
     } else {
       return { message: "error", data: "Failed to get Plans." };
     }
