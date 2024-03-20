@@ -1,11 +1,7 @@
 "use server";
 
-import prisma from "@/lib/prisma";
-
 export async function getPlans() {
   try {
-    let plans;
-
     const URL =
       process.env.NODE_ENV !== "development"
         ? process.env.URL_PROD
@@ -13,21 +9,15 @@ export async function getPlans() {
 
     const response = await fetch(`${URL}/api/plans`, {
       cache: "no-store",
+      next: { tags: ["get-plans"] },
     });
 
-    if (response) {
-      plans = (await response.json()).data;
+    if (response.ok) {
+      const plans = (await response.json()).data;
+      return { message: "success", data: plans };
+    } else {
+      return { message: "error", data: "Failed to get Plans." };
     }
-
-    try {
-      if (!plans) {
-        plans = await prisma.plan.findMany();
-      }
-    } catch (error) {
-      return { message: "error", data: "No plans found in database." };
-    }
-
-    return { message: "success", data: plans };
   } catch (error) {
     return { message: "error", data: "Failed to get Plans." };
   }

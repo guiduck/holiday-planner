@@ -13,8 +13,8 @@ export default async function Home() {
   const test = await testFetch();
   let plans: PlanType[] = [];
 
-  if (planResponse.message === "success") {
-    plans = planResponse.data;
+  if (planResponse?.message === "success") {
+    plans = planResponse?.data;
     console.log(plans);
   }
 
