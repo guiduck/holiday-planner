@@ -70,7 +70,7 @@ export function AddPlan({
               <Label htmlFor="date">When will it happen?</Label>
               <DatePicker />
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative">
               <Label htmlFor="title">What am I doing?</Label>
               <Input
                 id="title"
@@ -78,9 +78,13 @@ export function AddPlan({
                 placeholder="Your plan name"
                 {...register("title", { required: true })}
               />
-              {errors.title && <span>This field is required</span>}
+              {errors.title && (
+                <span className="text-xs text-red-500 absolute bottom-[-1.2rem] left-0">
+                  This field is required
+                </span>
+              )}
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative">
               <Label htmlFor="description">What are my plans?</Label>
               <Textarea
                 id="description"
@@ -88,8 +92,13 @@ export function AddPlan({
                 placeholder="What will you be doing?"
                 {...register("description", { required: true })}
               />
+              {errors.description && (
+                <span className="text-xs text-red-500 absolute bottom-[-1.2rem] left-0">
+                  Your description should have at least 30 characters.
+                </span>
+              )}
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative">
               <div className="flex gap-2 items-center ">
                 <Label htmlFor="locations">Where am I going?</Label>
                 <p className="text-xs text-muted-background opacity-50">
@@ -102,8 +111,13 @@ export function AddPlan({
                 placeholder="ex: Brasilia, Portugal, ..."
                 {...register("locations", { required: true })}
               />
+              {errors.locations && (
+                <span className="text-xs text-red-500 absolute bottom-[-1.2rem] left-0">
+                  This field is required
+                </span>
+              )}
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative">
               <div className="flex gap-2 items-center ">
                 <Label htmlFor="participants">Who is joining me?</Label>
                 <p className="text-xs text-muted-background opacity-50">
@@ -116,6 +130,11 @@ export function AddPlan({
                 placeholder="ex: Alex, Vitor, ..."
                 {...register("participants", { required: true })}
               />
+              {errors.participants && (
+                <span className="text-xs text-red-500 absolute bottom-[-1.2rem] left-0">
+                  This field is required
+                </span>
+              )}
             </div>
           </CardContent>
           <CardFooter className="justify-between space-x-2">
