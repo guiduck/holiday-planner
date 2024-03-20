@@ -22,6 +22,8 @@ import { Spinner } from "../Spinner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import setPlanIdCookie from "@/lib/actions/set-PlanId";
 import { PlanList } from "../PlanList";
+import { getPlans } from "@/lib/actions/get-Plans";
+import { useAlertStore } from "@/stores/alert-store";
 const AddPlan = dynamic(() => import("../AddPlanPanel"), {
   loading: () => (
     <div className="w-full h-full flex items-center justify-center">
@@ -38,7 +40,6 @@ const PlanDisplay = dynamic(() => import("../PlanDisplay"), {
 });
 
 interface PlanProps {
-  plans: PlanType[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
@@ -46,23 +47,44 @@ interface PlanProps {
 }
 
 export function PlanView({
-  plans,
   defaultLayout = [50, 50],
   defaultCollapsed = false,
   navCollapsedSize,
   currentDate,
 }: Readonly<PlanProps>) {
+  const [plans, setPlans] = React.useState<PlanType[]>([]);
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
   const { selectedPlan, setDisplayPlans, displayPlans, setSelectedPlan } =
     usePlansStore();
   const { showAddPlan, setShowAddPlan } = useModalStore();
+  const { setAlertData } = useAlertStore();
 
   const { width } = useWindowDimensions();
 
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
+
+  const getPlansData = async () => {
+    const plansResult = await getPlans();
+
+    if (plansResult.message === "success") {
+      const { data: plansData } = plansResult;
+      setPlans(plansData);
+    } else {
+      setAlertData({
+        show: true,
+        message: plansResult?.data as string,
+        time: 5000,
+        type: "error",
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    getPlansData();
+  }, []);
 
   React.useEffect(() => {
     if (plans.length > 0) {
