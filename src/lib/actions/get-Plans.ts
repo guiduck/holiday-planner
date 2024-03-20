@@ -6,7 +6,12 @@ export async function getPlans() {
   try {
     let plans;
 
-    const response = await fetch(`${process.env.URL_LOCAL}/api/plans`, {
+    const URL =
+      process.env.NODE_ENV !== "development"
+        ? process.env.URL_PROD
+        : process.env.URL_LOCAL;
+
+    const response = await fetch(`${URL}/api/plans`, {
       next: {
         tags: ["get-plans"],
       },

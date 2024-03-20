@@ -118,6 +118,7 @@ export function PlanView({
           collapsible={true}
           minSize={10}
           maxSize={100}
+          // @ts-ignore
           onCollapse={(collapsed) => {
             setIsCollapsed(collapsed);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(

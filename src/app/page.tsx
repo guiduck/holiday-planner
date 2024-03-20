@@ -4,6 +4,7 @@ import { PlanView } from "@/components/PlanView";
 import getDateCookie from "@/lib/actions/get-Date";
 import { getPlans } from "@/lib/actions/get-Plans";
 import { PlanType } from "@/models/plan-models";
+import { Suspense } from "react";
 
 export const revalidate = 10;
 
@@ -26,13 +27,17 @@ export default async function Home() {
         />
       )}
       <Alert />
-      <PDFModal />
-      <PlanView
-        plans={plans}
-        currentDate={dateResponse?.data}
-        defaultLayout={[40, 60]}
-        navCollapsedSize={5}
-      />
+      <Suspense>
+        <PDFModal />
+      </Suspense>
+      <Suspense>
+        <PlanView
+          plans={plans}
+          currentDate={dateResponse?.data}
+          defaultLayout={[40, 60]}
+          navCollapsedSize={5}
+        />
+      </Suspense>
     </main>
   );
 }

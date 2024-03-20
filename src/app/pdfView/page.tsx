@@ -6,12 +6,10 @@ const InvoicePDF = dynamic(() => import("../pdf"), {
   ssr: false,
 });
 
-const View = ({ modal }: { modal?: boolean }) => {
+export default function View() {
   return (
-    <div className={`w-screen ${modal ? "h-full" : "h-screen"}`}>
+    <div className={`w-screen h-screen`}>
       <InvoicePDF />
     </div>
   );
-};
-
-export default View;
+}

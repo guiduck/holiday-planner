@@ -13,7 +13,7 @@ import { Button } from "../ui/button";
 import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
-const View = dynamic(() => import("@/app/pdfView/page"), {
+const View = dynamic(() => import("@/components/pdfViewComponent"), {
   loading: () => <p>Loading...</p>,
 });
 
