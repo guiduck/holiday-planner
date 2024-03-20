@@ -13,9 +13,14 @@ const PlanCard = dynamic(() => import("../PlanCard"), {
 interface PlanListProps {
   items: PlanType[];
   selectedPlan?: PlanType;
+  onSelectPlan?: (plan: PlanType) => void;
 }
 
-export function PlanList({ items, selectedPlan }: Readonly<PlanListProps>) {
+export function PlanList({
+  items,
+  selectedPlan,
+  onSelectPlan,
+}: Readonly<PlanListProps>) {
   const groupedPlans = groupPlansByDate(items);
 
   return (
@@ -41,7 +46,12 @@ export function PlanList({ items, selectedPlan }: Readonly<PlanListProps>) {
 
                 <div className="flex flex-col gap-4">
                   {plans.map((plan) => (
-                    <PlanCard key={plan.id} plan={plan} />
+                    <PlanCard
+                      key={plan.id}
+                      plan={plan}
+                      selectedPlan={selectedPlan}
+                      onSelectPlan={onSelectPlan}
+                    />
                   ))}
                 </div>
               </div>

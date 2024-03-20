@@ -1,24 +1,15 @@
-import { PlanType } from "@/models/plan-models";
 import { Search as SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
-import { usePlansStore } from "@/stores/plan-store";
 
 interface SearchProps {
-  plans: PlanType[];
+  onSearch?: (query: string) => void;
 }
 
-export function Search({ plans = [] }: Readonly<SearchProps>) {
-  const { setDisplayPlans } = usePlansStore();
-
+export function Search({ onSearch }: Readonly<SearchProps>) {
   const hadnleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    setDisplayPlans(
-      plans.filter(
-        (plan) =>
-          plan.title.includes(value) || plan.description?.includes(value)
-      )
-    );
+    onSearch?.(value);
   };
 
   return (

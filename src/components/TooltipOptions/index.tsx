@@ -4,7 +4,9 @@ import DeleteButton from "./delete-button";
 import ArchiveButton from "./archive-button";
 import { Separator } from "../ui/separator";
 
-export default function TooltipOptions({ plan }: { plan?: PlanType }) {
+export default function TooltipOptions({
+  plan,
+}: Readonly<{ plan?: PlanType }>) {
   return (
     <div className="flex items-center gap-2">
       <Tooltip>

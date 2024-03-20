@@ -16,7 +16,6 @@ export default function CalendarButton() {
             disabled={false}
             onClick={() => setShowCalendar(!showCalendar)}
           >
-            {/* TODO: colocar data selecionada */}
             <span>calendar</span>
             <CalendarIcon className="ml-auto h-5 w-5" />
             <span className="sr-only">Date</span>

@@ -1,6 +1,5 @@
 import { Alert } from "@/components/Alert";
-import { CalendarModal } from "@/components/CalendarModal";
-import { PDFModal } from "@/components/ModalPDF";
+import { PDFModal } from "@/components/PDFModal";
 import { PlanView } from "@/components/PlanView";
 import getDateCookie from "@/lib/actions/get-Date";
 import { getPlans } from "@/lib/actions/get-Plans";
@@ -25,7 +24,6 @@ export default async function Home() {
         />
       )}
       <Alert />
-      <CalendarModal />
       <PDFModal />
       <PlanView
         plans={plans}

@@ -7,7 +7,12 @@ import { PDFDocument } from "./pdf-document";
 import getPlanById from "@/lib/actions/get-Plan";
 import { useAlertStore } from "@/stores/snackbar-store";
 
-const PDFView = () => {
+export interface PDFViewProps {
+  plan?: PlanType;
+  storybook?: boolean;
+}
+
+const PDFView = ({ plan, storybook = false }: PDFViewProps) => {
   const [planData, setPlanData] = useState<PlanType>();
   const { setAlertData } = useAlertStore();
 
@@ -26,10 +31,14 @@ const PDFView = () => {
   };
 
   useEffect(() => {
-    getPlan();
+    if (!storybook) getPlan();
   }, []);
 
-  return <PDFViewer>{planData && <PDFDocument plan={planData} />}</PDFViewer>;
+  return (
+    <PDFViewer>
+      {(planData || plan) && <PDFDocument plan={planData || plan} />}
+    </PDFViewer>
+  );
 };
 
 export default PDFView;

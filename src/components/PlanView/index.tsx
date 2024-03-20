@@ -11,7 +11,6 @@ import { TooltipProvider } from "../ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Separator } from "../ui/separator";
 import { PlanType } from "@/models/plan-models";
-import { PlanList } from "./plan-list";
 import { usePlansStore } from "@/stores/plan-store";
 import { Search } from "../Search";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
@@ -20,6 +19,9 @@ import { Drawer, DrawerContent } from "../ui/drawer";
 import { useModalStore } from "@/stores/modal-control";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Spinner";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import setPlanIdCookie from "@/lib/actions/set-PlanId";
+import { PlanList } from "../PlanList";
 const AddPlan = dynamic(() => import("../AddPlanPanel"), {
   loading: () => (
     <div className="w-full h-full flex items-center justify-center">
@@ -51,16 +53,52 @@ export function PlanView({
   currentDate,
 }: Readonly<PlanProps>) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
+
   const { selectedPlan, setDisplayPlans, displayPlans, setSelectedPlan } =
     usePlansStore();
   const { showAddPlan, setShowAddPlan } = useModalStore();
+
   const { width } = useWindowDimensions();
+
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
 
   React.useEffect(() => {
     if (plans.length > 0) {
       setDisplayPlans(plans);
     }
   }, [plans]);
+
+  const onSelectPlan = async (plan: PlanType) => {
+    const params = new URLSearchParams(searchParams);
+    let selected = selectedPlan;
+
+    if (selectedPlan?.id !== plan?.id) {
+      selected = plan;
+      params.set("planId", plan?.id);
+      await setPlanIdCookie(plan?.id);
+    }
+
+    if (selectedPlan?.id === plan?.id && selectedPlan !== undefined) {
+      selected = undefined;
+      params.delete("planId");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+    return setSelectedPlan(selected);
+  };
+
+  const onSearch = (query: string) => {
+    setDisplayPlans(
+      plans.filter(
+        (plan) =>
+          plan.title.includes(query) ||
+          plan.description?.includes(query) ||
+          plan.date.includes(query)
+      )
+    );
+  };
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -121,7 +159,7 @@ export function PlanView({
 
             <div className="flex bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60  gap-4">
               <div className="grow">
-                <Search plans={plans} />
+                <Search onSearch={onSearch} />
               </div>
               {width < 768 && (
                 <div className="md:hidden">
@@ -144,7 +182,11 @@ export function PlanView({
             </div>
 
             <TabsContent value="all" className="m-0">
-              <PlanList items={displayPlans} selectedPlan={selectedPlan} />
+              <PlanList
+                items={displayPlans}
+                selectedPlan={selectedPlan}
+                onSelectPlan={onSelectPlan}
+              />
             </TabsContent>
 
             <TabsContent value="unread" className="m-0">

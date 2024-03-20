@@ -1,8 +1,5 @@
-"use client";
-
 import { cn } from "@/lib/utils/cn";
 import { PlanType } from "@/models/plan-models";
-import { usePlansStore } from "@/stores/plan-store";
 import { Badge } from "../ui/badge";
 import {
   CircleMinus,
@@ -12,23 +9,21 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFDocument } from "@/app/pdf/pdf-document";
 import { Separator } from "../ui/separator";
-import setPlanIdCookie from "@/lib/actions/set-PlanId";
 
-interface PlanCardProps {
+interface PlanCardUiProps {
   plan?: PlanType;
+  selectedPlan?: PlanType;
+  onSelectPlan?: (plan: PlanType) => void;
 }
 
-export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
-  const { setSelectedPlan, selectedPlan } = usePlansStore();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
-  const searchParams = useSearchParams();
-
+export default function PlanCardUi({
+  plan,
+  selectedPlan,
+  onSelectPlan,
+}: Readonly<PlanCardUiProps>) {
   return (
     <button
       className={cn(
@@ -36,24 +31,7 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
         selectedPlan?.id === plan?.id && "bg-muted",
         `${plan?.archived && "bg-muted opacity-70"}`
       )}
-      onClick={async () => {
-        const params = new URLSearchParams(searchParams);
-        let selected = selectedPlan;
-
-        if (selectedPlan?.id !== plan?.id) {
-          selected = plan;
-          params.set("planId", plan?.id as string);
-          await setPlanIdCookie(plan?.id as string);
-        }
-
-        if (selectedPlan?.id === plan?.id && selectedPlan !== undefined) {
-          selected = undefined;
-          params.delete("planId");
-        }
-
-        replace(`${pathname}?${params.toString()}`);
-        return setSelectedPlan(selected);
-      }}
+      onClick={() => onSelectPlan?.(plan as PlanType)}
     >
       <div className="flex w-full flex-col gap-1">
         <div className="flex items-center justify-between">
@@ -95,10 +73,10 @@ export default function PlanCard({ plan }: Readonly<PlanCardProps>) {
           {plan?.locations.length ? (
             <div className="flex items-center gap-4">
               <Badge
-                className="text-[0.7rem] p-0 px-1.5 gap-1 bg-primary-foreground text-accent rounded-sm"
+                className="text-[0.7rem] p-0 px-1.5 gap-1 bg-secondary-foreground text-secondary rounded-sm hover:bg-secondary-foreground hover:opacity-70 hover:text-secondary-freground"
                 variant="secondary"
               >
-                <MapPin className="h-4 w-4 text-accent" />
+                <MapPin className="h-4 w-4 text-secondary " />
                 {plan?.locations.slice(0, 3).join(", ")}
                 {plan?.locations.length > 4 ? "..." : null}
               </Badge>
