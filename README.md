@@ -19,6 +19,8 @@ This project was bundled with [create-next-app](https://nextjs.org/docs/pages/ap
   - [Prisma Setup](#prisma-setup)
   - [Environment variables Front](#frontend-environment-variables)
   - [Environment variables Back](#backend-environment-variables)
+- [UI Documentation](#ui-documentation)
+  - [Components](#components)
 - [Tech Stack](#stack)
 - [Api documentation](#api-documentation)
 - [Usage](#usage)
@@ -188,6 +190,171 @@ It could be anything, Here I'm using create-plan.
    ```
 
    Notice I'm using my docker-compose.yml file's _port_, _user_ and _paswword_. If you define other names, please update accordingly with your docker-compose file.
+
+## UI Documentation
+
+- please, first [install dependencies](#installation).
+
+1. **Run storbook on port 6006:**
+
+   ```bash
+   npm run storybook
+   ```
+
+### Components
+
+#### AddPlanPanel Component
+
+Provides a UI panel for adding plans, with options for toggling between displaying the panel within a drawer or without one.
+
+**Props:**
+
+- `forDrawer` (boolean): Controls whether the panel is displayed within a drawer. Default is `true`.
+
+#### Alert Component
+
+Displays different types of alerts (neutral, error, success) with customizable messages.
+
+**Props:**
+
+- `type` (string): Type of alert. Options include "neutral", "error", and "success".
+- `show` (boolean): Controls the visibility of the alert. Default is `true`.
+- `message` (string): The message to be displayed in the alert.
+- `time` (number): Duration in milliseconds for which the alert is displayed. Default is `50000`.
+
+#### ModeToggle Component
+
+A component for toggling between different themes.
+
+**Props:**
+
+- None
+
+#### PlanCard Component
+
+Displays information about a specific plan. Includes options for selecting/deselecting a plan.
+
+**Props:**
+
+- `plan` (object): Information about the plan to be displayed.
+- `selectedPlan` (object): Information about the currently selected plan.
+- `onSelectPlan` (function): Callback function triggered when a plan is selected.
+
+**Example:**
+
+```jsx
+<PlanCard
+  plan={mockedPlans[0]}
+  selectedPlan={mockedPlans[0]}
+  onSelectPlan={() => {}}
+/>
+```
+
+#### PlanDisplay Component
+
+Displays the main interface for managing plans. Includes options for adding a new plan, selecting an existing plan, and creating a new plan.
+
+**Props:**
+
+- `testId` (string): Test ID for the component.
+
+#### PlanList Component
+
+Displays a list of plans with options for selecting a plan.
+
+**Props:**
+
+- `selectedPlan` (object): Information about the currently selected plan.
+- `onSelectPlan` (function): Callback function triggered when a plan is selected.
+- `items` (array): An array of plan objects to be displayed in the list.
+
+**Example:**
+
+```jsx
+<PlanList
+  selectedPlan={mockedPlans[0]}
+  onSelectPlan={() => {}}
+  items={mockedPlans}
+/>
+```
+
+#### PlanSelected Component
+
+Displays detailed information about a selected plan, including date, title, locations, participants, and description. Provides options for viewing and downloading associated files.
+
+**Props:**
+
+- `dateFormated` (string): Formatted date to be displayed.
+- `plan` (object): Information about the selected plan.
+- `testId` (string): Test ID for the component.
+
+**Example:**
+
+```jsx
+<PlanSelected
+  dateFormated="2024-03-20"
+  plan={{
+    title: "Plan Title",
+    date: "2024-03-20",
+    locations: ["Location 1", "Location 2"],
+    participants: ["Participant 1", "Participant 2"],
+    description: "Plan description goes here.",
+  }}
+  testId="plan-selected"
+/>
+```
+
+#### PlanView Component
+
+Manages the view for plans, including a resizable panel for plan navigation and display.
+
+**Props:**
+
+- `defaultLayout` (array): Default layout sizes for the resizable panel group.
+- `defaultCollapsed` (boolean): Specifies if the panel is collapsed by default.
+- `navCollapsedSize` (number): Size of the collapsed panel.
+- `currentDate` (string): Current date to filter plans by date.
+- `plans` (array): An array of plan objects to be displayed.
+
+**Example:**
+
+```jsx
+<PlanView
+  defaultLayout={[50, 50]}
+  defaultCollapsed={false}
+  navCollapsedSize={200}
+  currentDate="2024-03-20"
+  plans={[]}
+/>
+```
+
+#### Search Component
+
+Allows users to search for specific items by entering a query.
+
+**Props:**
+
+- `onSearch` (function): Callback function triggered when a search query is entered.
+
+**Example:**
+
+```jsx
+<Search onSearch={(query: string) => console.log("Search query:", query)} />
+```
+
+#### Spinner Component
+
+Displays a loading spinner animation.
+
+**Props:**
+
+- None
+
+**Example:**
+
+```jsx
+<Spinner />
+```
 
 ### API Documentation
 
