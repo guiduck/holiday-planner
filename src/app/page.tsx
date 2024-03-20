@@ -6,8 +6,6 @@ import { getPlans } from "@/lib/actions/get-Plans";
 import { PlanType } from "@/models/plan-models";
 import { Suspense } from "react";
 
-export const revalidate = 10;
-
 export default async function Home() {
   const planResponse = await getPlans();
   const dateResponse = await getDateCookie();

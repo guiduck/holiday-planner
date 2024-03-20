@@ -21,12 +21,16 @@ export async function getPlans() {
       plans = (await response.json()).data;
     }
 
-    if (!plans) {
-      plans = await prisma.plan.findMany();
+    try {
+      if (!plans) {
+        plans = await prisma.plan.findMany();
+      }
+    } catch (error) {
+      return { message: "error", data: "No plans found in database." };
     }
 
     return { message: "success", data: plans };
   } catch (error) {
-    return { message: "error", data: "Failed to get plans from database." };
+    return { message: "error", data: "Failed to get Plans." };
   }
 }
