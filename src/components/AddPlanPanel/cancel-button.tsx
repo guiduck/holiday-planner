@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 export default function CancelButton() {
   const { setShowAddPlan } = useModalStore();
   return (
-    <Button variant="ghost" onClick={() => setShowAddPlan(false)}>
+    <Button type="button" variant="ghost" onClick={() => setShowAddPlan(false)}>
       Cancel
     </Button>
   );
