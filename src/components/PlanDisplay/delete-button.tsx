@@ -2,7 +2,7 @@ import { PlanType } from "@/models/plan-models";
 import { Button } from "../ui/button";
 import deletePlan from "@/lib/actions/delete-Plan";
 import { Trash2 } from "lucide-react";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
 
 export default function DeleteButton({
   plan,

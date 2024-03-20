@@ -1,5 +1,5 @@
 import { PlanType } from "@/models/plan-models";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Tooltip, TooltipContent } from "../ui/tooltip";
 import DeleteButton from "./delete-button";
 import ArchiveButton from "./archive-button";
 import { Separator } from "../ui/separator";
@@ -10,9 +10,7 @@ export default function TooltipOptions({
   return (
     <div className="flex items-center gap-2">
       <Tooltip>
-        <TooltipTrigger asChild>
-          <ArchiveButton plan={plan} />
-        </TooltipTrigger>
+        <ArchiveButton plan={plan} />
 
         <TooltipContent>
           {plan?.archived ? "Unarchive" : "Archive"}
@@ -20,9 +18,7 @@ export default function TooltipOptions({
       </Tooltip>
 
       <Tooltip>
-        <TooltipTrigger asChild>
-          <DeleteButton plan={plan} />
-        </TooltipTrigger>
+        <DeleteButton plan={plan} />
 
         <TooltipContent>Delete permanently</TooltipContent>
       </Tooltip>

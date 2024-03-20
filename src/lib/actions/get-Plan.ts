@@ -1,14 +1,9 @@
 "use server";
 
 import prisma from "../prisma";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 export default async function getPlanById() {
-  // const url = new URL(headers().get("x-url")!);
-  //   const searchParams = url.searchParams;
-
-  // console.log(url);
-  //   const { planId } = searchParams;
   const planId = cookies().get("planId")?.value;
 
   if (!planId) {

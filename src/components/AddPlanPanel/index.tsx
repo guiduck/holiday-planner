@@ -14,7 +14,7 @@ import {
 import dynamic from "next/dynamic";
 import { Spinner } from "../Spinner";
 import handleCreatePlan, { PlanFormType } from "@/lib/actions/create-Plan";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
 import { DatePicker } from "../ui/datepicker";
 import { cn } from "@/lib/utils/cn";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,9 @@ const CancelButton = dynamic(() => import("./cancel-button"), {
   loading: () => <Spinner />,
 });
 
-export function AddPlan({ forDrawer = false }: { forDrawer?: boolean }) {
+export function AddPlan({
+  forDrawer = false,
+}: Readonly<{ forDrawer?: boolean }>) {
   const { setAlertData } = useAlertStore();
   const {
     register,

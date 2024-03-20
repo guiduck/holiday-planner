@@ -4,7 +4,8 @@ import { PlanType } from "@/models/plan-models";
 import { Button } from "../ui/button";
 import deletePlan from "@/lib/actions/delete-Plan";
 import { Trash2 } from "lucide-react";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
+import { TooltipTrigger } from "../ui/tooltip";
 
 export default function DeleteButton({
   plan,
@@ -22,9 +23,16 @@ export default function DeleteButton({
   };
 
   return (
-    <Button variant="ghost" size="icon" disabled={!plan} onClick={handleDelete}>
-      <Trash2 className="h-4 w-4" />
-      <span className="sr-only">Delete permanently</span>
-    </Button>
+    <TooltipTrigger asChild>
+      <Button
+        variant="ghost"
+        size="icon"
+        disabled={!plan}
+        onClick={handleDelete}
+      >
+        <Trash2 className="h-4 w-4" />
+        <span className="sr-only">Delete permanently</span>
+      </Button>
+    </TooltipTrigger>
   );
 }

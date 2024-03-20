@@ -5,8 +5,9 @@ import { Spinner } from "../Spinner";
 import { Button } from "../ui/button";
 import archivePlan from "@/lib/actions/archive-Plan";
 import { useFormStatus } from "react-dom";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
 import { PlanType } from "@/models/plan-models";
+import { TooltipTrigger } from "../ui/tooltip";
 
 export default function ArchiveButton({ plan }: { plan?: PlanType }) {
   const { setAlertData } = useAlertStore();
@@ -22,20 +23,22 @@ export default function ArchiveButton({ plan }: { plan?: PlanType }) {
     });
   };
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      disabled={!plan}
-      onClick={async () => await handleArchivePlan()}
-    >
-      {pending ? (
-        <Spinner className="h-4 w-4" />
-      ) : (
-        <>
-          <Archive className="h-4 w-4" />
-          <span className="sr-only">Archive</span>
-        </>
-      )}
-    </Button>
+    <TooltipTrigger asChild>
+      <Button
+        variant="ghost"
+        size="icon"
+        disabled={!plan}
+        onClick={async () => await handleArchivePlan()}
+      >
+        {pending ? (
+          <Spinner className="h-4 w-4" />
+        ) : (
+          <>
+            <Archive className="h-4 w-4" />
+            <span className="sr-only">Archive</span>
+          </>
+        )}
+      </Button>
+    </TooltipTrigger>
   );
 }

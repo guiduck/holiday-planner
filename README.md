@@ -298,6 +298,8 @@ While developing the dashboard, I am primarly focused on enhancing user experien
 
 - **Server actions:** I think there are very strong use cases for the server actions that weren't fully exploited.
 
+- **Skeletons:** Could only serve the PlanCard with its own Skeleton, but actually intended to use it everywhere.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

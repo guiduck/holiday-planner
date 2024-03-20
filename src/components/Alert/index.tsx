@@ -7,7 +7,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert";
 import React, { useEffect } from "react";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
 
 interface AlertProps {
   show?: boolean;

@@ -5,7 +5,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { useState, useEffect } from "react";
 import { PDFDocument } from "./pdf-document";
 import getPlanById from "@/lib/actions/get-Plan";
-import { useAlertStore } from "@/stores/snackbar-store";
+import { useAlertStore } from "@/stores/alert-store";
 
 export interface PDFViewProps {
   plan?: PlanType;
