@@ -141,15 +141,15 @@ Before using prisma, we need to [set our DATABASE_URL.](#backend-environment-var
 
 1. **Run migration:**
 
-```bash
-npx prisma migrate dev
-```
+   ```bash
+   npx prisma migrate dev
+   ```
 
 2. **Choose a name for the migration:**
 
-```bash
-create-plan
-```
+   ```bash
+   create-plan
+   ```
 
 It could be anything, Here I'm using create-plan.
 
@@ -201,160 +201,160 @@ It could be anything, Here I'm using create-plan.
    npm run storybook
    ```
 
-### Components
+   ### Components
 
-#### AddPlanPanel Component
+   #### AddPlanPanel Component
 
-Provides a UI panel for adding plans, with options for toggling between displaying the panel within a drawer or without one.
+   Provides a UI panel for adding plans, with options for toggling between displaying the panel within a drawer or without one.
 
-**Props:**
+   **Props:**
 
-- `forDrawer` (boolean): Controls whether the panel is displayed within a drawer. Default is `true`.
+   - `forDrawer` (boolean): Controls whether the panel is displayed within a drawer. Default is `true`.
 
-#### Alert Component
+   #### Alert Component
 
-Displays different types of alerts (neutral, error, success) with customizable messages.
+   Displays different types of alerts (neutral, error, success) with customizable messages.
 
-**Props:**
+   **Props:**
 
-- `type` (string): Type of alert. Options include "neutral", "error", and "success".
-- `show` (boolean): Controls the visibility of the alert. Default is `true`.
-- `message` (string): The message to be displayed in the alert.
-- `time` (number): Duration in milliseconds for which the alert is displayed. Default is `50000`.
+   - `type` (string): Type of alert. Options include "neutral", "error", and "success".
+   - `show` (boolean): Controls the visibility of the alert. Default is `true`.
+   - `message` (string): The message to be displayed in the alert.
+   - `time` (number): Duration in milliseconds for which the alert is displayed. Default is `50000`.
 
-#### ModeToggle Component
+   #### ModeToggle Component
 
-A component for toggling between different themes.
+   A component for toggling between different themes.
 
-**Props:**
+   **Props:**
 
-- None
+   - None
 
-#### PlanCard Component
+   #### PlanCard Component
 
-Displays information about a specific plan. Includes options for selecting/deselecting a plan.
+   Displays information about a specific plan. Includes options for selecting/deselecting a plan.
 
-**Props:**
+   **Props:**
 
-- `plan` (object): Information about the plan to be displayed.
-- `selectedPlan` (object): Information about the currently selected plan.
-- `onSelectPlan` (function): Callback function triggered when a plan is selected.
+   - `plan` (object): Information about the plan to be displayed.
+   - `selectedPlan` (object): Information about the currently selected plan.
+   - `onSelectPlan` (function): Callback function triggered when a plan is selected.
 
-**Example:**
+   **Example:**
 
-```jsx
-<PlanCard
-  plan={mockedPlans[0]}
-  selectedPlan={mockedPlans[0]}
-  onSelectPlan={() => {}}
-/>
-```
+   ```jsx
+   <PlanCard
+     plan={mockedPlans[0]}
+     selectedPlan={mockedPlans[0]}
+     onSelectPlan={() => {}}
+   />
+   ```
 
-#### PlanDisplay Component
+   #### PlanDisplay Component
 
-Displays the main interface for managing plans. Includes options for adding a new plan, selecting an existing plan, and creating a new plan.
+   Displays the main interface for managing plans. Includes options for adding a new plan, selecting an existing plan, and creating a new plan.
 
-**Props:**
+   **Props:**
 
-- `testId` (string): Test ID for the component.
+   - `testId` (string): Test ID for the component.
 
-#### PlanList Component
+   #### PlanList Component
 
-Displays a list of plans with options for selecting a plan.
+   Displays a list of plans with options for selecting a plan.
 
-**Props:**
+   **Props:**
 
-- `selectedPlan` (object): Information about the currently selected plan.
-- `onSelectPlan` (function): Callback function triggered when a plan is selected.
-- `items` (array): An array of plan objects to be displayed in the list.
+   - `selectedPlan` (object): Information about the currently selected plan.
+   - `onSelectPlan` (function): Callback function triggered when a plan is selected.
+   - `items` (array): An array of plan objects to be displayed in the list.
 
-**Example:**
+   **Example:**
 
-```jsx
-<PlanList
-  selectedPlan={mockedPlans[0]}
-  onSelectPlan={() => {}}
-  items={mockedPlans}
-/>
-```
+   ```jsx
+   <PlanList
+     selectedPlan={mockedPlans[0]}
+     onSelectPlan={() => {}}
+     items={mockedPlans}
+   />
+   ```
 
-#### PlanSelected Component
+   #### PlanSelected Component
 
-Displays detailed information about a selected plan, including date, title, locations, participants, and description. Provides options for viewing and downloading associated files.
+   Displays detailed information about a selected plan, including date, title, locations, participants, and description. Provides options for viewing and downloading associated files.
 
-**Props:**
+   **Props:**
 
-- `dateFormated` (string): Formatted date to be displayed.
-- `plan` (object): Information about the selected plan.
-- `testId` (string): Test ID for the component.
+   - `dateFormated` (string): Formatted date to be displayed.
+   - `plan` (object): Information about the selected plan.
+   - `testId` (string): Test ID for the component.
 
-**Example:**
+   **Example:**
 
-```jsx
-<PlanSelected
-  dateFormated="2024-03-20"
-  plan={{
-    title: "Plan Title",
-    date: "2024-03-20",
-    locations: ["Location 1", "Location 2"],
-    participants: ["Participant 1", "Participant 2"],
-    description: "Plan description goes here.",
-  }}
-  testId="plan-selected"
-/>
-```
+   ```jsx
+   <PlanSelected
+     dateFormated="2024-03-20"
+     plan={{
+       title: "Plan Title",
+       date: "2024-03-20",
+       locations: ["Location 1", "Location 2"],
+       participants: ["Participant 1", "Participant 2"],
+       description: "Plan description goes here.",
+     }}
+     testId="plan-selected"
+   />
+   ```
 
-#### PlanView Component
+   #### PlanView Component
 
-Manages the view for plans, including a resizable panel for plan navigation and display.
+   Manages the view for plans, including a resizable panel for plan navigation and display.
 
-**Props:**
+   **Props:**
 
-- `defaultLayout` (array): Default layout sizes for the resizable panel group.
-- `defaultCollapsed` (boolean): Specifies if the panel is collapsed by default.
-- `navCollapsedSize` (number): Size of the collapsed panel.
-- `currentDate` (string): Current date to filter plans by date.
-- `plans` (array): An array of plan objects to be displayed.
+   - `defaultLayout` (array): Default layout sizes for the resizable panel group.
+   - `defaultCollapsed` (boolean): Specifies if the panel is collapsed by default.
+   - `navCollapsedSize` (number): Size of the collapsed panel.
+   - `currentDate` (string): Current date to filter plans by date.
+   - `plans` (array): An array of plan objects to be displayed.
 
-**Example:**
+   **Example:**
 
-```jsx
-<PlanView
-  defaultLayout={[50, 50]}
-  defaultCollapsed={false}
-  navCollapsedSize={200}
-  currentDate="2024-03-20"
-  plans={[]}
-/>
-```
+   ```jsx
+   <PlanView
+     defaultLayout={[50, 50]}
+     defaultCollapsed={false}
+     navCollapsedSize={200}
+     currentDate="2024-03-20"
+     plans={[]}
+   />
+   ```
 
-#### Search Component
+   #### Search Component
 
-Allows users to search for specific items by entering a query.
+   Allows users to search for specific items by entering a query.
 
-**Props:**
+   **Props:**
 
-- `onSearch` (function): Callback function triggered when a search query is entered.
+   - `onSearch` (function): Callback function triggered when a search query is entered.
 
-**Example:**
+   **Example:**
 
-```jsx
-<Search onSearch={(query: string) => console.log("Search query:", query)} />
-```
+   ```jsx
+   <Search onSearch={(query: string) => console.log("Search query:", query)} />
+   ```
 
-#### Spinner Component
+   #### Spinner Component
 
-Displays a loading spinner animation.
+   Displays a loading spinner animation.
 
-**Props:**
+   **Props:**
 
-- None
+   - None
 
-**Example:**
+   **Example:**
 
-```jsx
-<Spinner />
-```
+   ```jsx
+   <Spinner />
+   ```
 
 ### API Documentation
 
