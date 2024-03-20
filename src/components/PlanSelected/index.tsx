@@ -11,14 +11,16 @@ import { Button } from "../ui/button";
 interface PlanSelectedProps {
   dateFormated: string;
   plan?: PlanType;
+  testId?: string;
 }
 
 export default function PlanSelected({
   dateFormated,
   plan,
+  testId = "plan-selected",
 }: Readonly<PlanSelectedProps>) {
   return (
-    <div>
+    <div data-testid={testId}>
       <div className="flex items-center p-2">
         <TooltipOptions plan={plan} />
 

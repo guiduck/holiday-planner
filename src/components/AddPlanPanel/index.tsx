@@ -82,7 +82,7 @@ export function AddPlan({ forDrawer = false }: { forDrawer?: boolean }) {
               <Label htmlFor="description">What are my plans?</Label>
               <Textarea
                 id="description"
-                minLength={50}
+                minLength={30}
                 placeholder="What will you be doing?"
                 {...register("description", { required: true })}
               />

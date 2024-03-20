@@ -1,6 +1,5 @@
 "use client";
 
-import { PlanType } from "@/models/plan-models";
 import { useModalStore } from "@/stores/modal-control";
 import { useDateStore } from "@/stores/date-store";
 import { usePlansStore } from "@/stores/plan-store";
@@ -26,13 +25,13 @@ const PlanSelected = dynamic(() => import("../PlanSelected"), {
   ),
 });
 
-export function PlanDisplay() {
+export function PlanDisplay({ testId }: Readonly<{ testId?: string }>) {
   const { showAddPlan } = useModalStore();
   const { dateFormated } = useDateStore();
   const { selectedPlan } = usePlansStore();
 
   return (
-    <div className="flex flex-col h-full">
+    <div data-testid={testId} className="flex flex-col h-full">
       {showAddPlan && !selectedPlan && (
         <div className="hidden h-full flex-col md:flex  w-full">
           <AddPlan />
@@ -41,7 +40,7 @@ export function PlanDisplay() {
 
       {selectedPlan && (
         <PlanSelected
-          plan={selectedPlan as PlanType}
+          plan={selectedPlan}
           dateFormated={dateFormated as string}
         />
       )}

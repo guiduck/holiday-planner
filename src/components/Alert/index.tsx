@@ -47,8 +47,12 @@ export function Alert({
           : "destructive"
       }
     >
-      {alertData.type === "success" && <CircleCheckBig className="h-4 w-4" />}
-      {alertData.type === "error" && <AlertCircle className="h-4 w-4" />}
+      {alertData.type === "success" && (
+        <CircleCheckBig data-testid="success" className="h-4 w-4" />
+      )}
+      {alertData.type === "error" && (
+        <AlertCircle data-testid="error" className="h-4 w-4" />
+      )}
       <AlertTitle>{alertData.type}</AlertTitle>
       <AlertDescription className="whitespace-nowrap text-ellipsis">
         {alertData.message}

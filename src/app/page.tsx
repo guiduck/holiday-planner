@@ -12,6 +12,7 @@ export default async function Home() {
 
   if (planResponse.message === "success") {
     plans = planResponse.data;
+    console.log(plans);
   }
 
   return (

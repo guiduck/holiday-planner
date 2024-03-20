@@ -9,23 +9,28 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFDocument } from "@/app/pdf/pdf-document";
 import { Separator } from "../ui/separator";
+import { Spinner } from "../Spinner";
+import { Suspense } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 interface PlanCardUiProps {
   plan?: PlanType;
   selectedPlan?: PlanType;
   onSelectPlan?: (plan: PlanType) => void;
+  testId?: string;
 }
 
-export default function PlanCardUi({
+export function PlanCard({
   plan,
   selectedPlan,
   onSelectPlan,
+  testId,
 }: Readonly<PlanCardUiProps>) {
   return (
     <button
+      data-testid={testId}
       className={cn(
         "min-w-[300px] flex flex-col p-6 px-4 items-start gap-4 rounded-lg border text-left text-sm transition-all hover:bg-accent",
         selectedPlan?.id === plan?.id && "bg-muted",
@@ -90,21 +95,25 @@ export default function PlanCardUi({
       </div>
       <div className="w-full flex justify-end items-center">
         <div className="flex items-center gap-2">
-          <PDFDownloadLink
-            document={<PDFDocument plan={plan} />}
-            fileName="somename.pdf"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? (
-                <p className="text-xs">Loading document...</p>
-              ) : (
-                <span className="text-xs flex gap-2">
-                  <Download className="w-4 h-4" />
-                  Download PDF
-                </span>
-              )
-            }
-          </PDFDownloadLink>
+          <Suspense fallback={<Spinner className="h-4 w-4" />}>
+            {!testId && (
+              <PDFDownloadLink
+                document={<PDFDocument plan={plan} />}
+                fileName="somename.pdf"
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? (
+                    <p className="text-xs">Loading document...</p>
+                  ) : (
+                    <span className="text-xs flex gap-2">
+                      <Download className="w-4 h-4" />
+                      Download PDF
+                    </span>
+                  )
+                }
+              </PDFDownloadLink>
+            )}
+          </Suspense>
           <Separator orientation="vertical" className="mx-1 h-6" />
           <p className="text-xs text-end w-[97px]">
             {selectedPlan?.id !== plan?.id ? (
@@ -124,3 +133,5 @@ export default function PlanCardUi({
     </button>
   );
 }
+
+export default PlanCard;

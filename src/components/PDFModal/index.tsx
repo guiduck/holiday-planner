@@ -36,14 +36,18 @@ export function PDFModal() {
   };
 
   return (
-    <div className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-20">
+    <div
+      data-testid="pdf-modal"
+      className="absolute w-screen h-screen top-0 left-0 flex items-center justify-center z-20"
+    >
       <div
+        data-testid="pdf-modal-backdrop"
         className="absolute w-screen h-screen top-0 left-0 bg-background opacity-40 backdrop-filter backdrop-grayscale backdrop-blur-md backdrop-contrast-200 "
         onClick={() => setShowPDF(false)}
       ></div>
       <Card className="z-[100000] absolute min-h-[250px] w-full bottom-0 mt-[-200px] border-2 border-bg-primary left-0 rounded-tl-2 rounded-tr-2 rounded-br-none rounded-bl-none md:relative md:rounded-md bg-background md:w-[600px]">
         <div className="relative w-full h-full">
-          <button onClick={() => setShowPDF(false)}>
+          <button data-testid="close-button" onClick={() => setShowPDF(false)}>
             <X className="h-6 w-6 absolute right-3 top-2 text-muted-foreground" />
           </button>
           <CardHeader>
@@ -58,10 +62,10 @@ export function PDFModal() {
             </div>
           </CardContent>
           <CardFooter className="justify-between space-x-2">
-            <Button type="submit" onClick={finish}>
+            <Button data-testid="confirm-button" type="submit" onClick={finish}>
               Confirm
             </Button>
-            <a href={getpdfrUrl()} target="_blank">
+            <a data-testid="document-link" href={getpdfrUrl()} target="_blank">
               <p className="">See full document</p>
             </a>
           </CardFooter>
