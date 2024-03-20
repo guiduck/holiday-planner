@@ -25,6 +25,7 @@ export default async function Home() {
         <PDFModal />
       </Suspense>
       {test && JSON.stringify(test)}
+      {plans && JSON.stringify(plans)}
       <Suspense>
         <PlanView
           currentDate={dateResponse?.data}
