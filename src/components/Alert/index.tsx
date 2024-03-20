@@ -38,7 +38,7 @@ export function Alert({
 
   return (
     <AlertUi
-      className={`absolute z-[100000] min-w-[300px] h-[70px] border-2 top-0 right-0 md:max-w-[350px] max-h-[200px] ${
+      className={`absolute z-[100000] bg-background min-w-[300px] h-[70px] border-2 top-0 right-0 md:max-w-[350px] max-h-[200px] ${
         alertData.type === "success" ? "border-green-800" : ""
       }`}
       variant={
