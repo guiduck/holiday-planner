@@ -139,19 +139,19 @@ Before using prisma, we need to [set our DATABASE_URL.](#backend-environment-var
 
 1. **Run migration:**
 
-   ```bash
-   npx prisma migrate dev
-   ```
+```bash
+npx prisma migrate dev
+```
 
 2. **Choose a name for the migration:**
 
-   ```bash
-   create-plan
-   ```
+```bash
+create-plan
+```
 
-   It could be anything, Here I'm using create-plan.
+It could be anything, Here I'm using create-plan.
 
-   ### Frontend Environment Variables
+### Frontend Environment Variables
 
 3. **Create a `.env` File:**
 
@@ -161,9 +161,9 @@ Before using prisma, we need to [set our DATABASE_URL.](#backend-environment-var
 
    - In the `.env.[environment]` file, define your environment variables in the following format:
 
-     ```
-     VARIABLE_NAME=variable_value
-     ```
+   ```
+   VARIABLE_NAME=variable_value
+   ```
 
    Replace `VARIABLE_NAME` with the name of your variable and `variable_value` with the actual value you want to set.
 
