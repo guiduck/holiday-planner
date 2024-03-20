@@ -174,7 +174,7 @@ It could be anything, Here I'm using create-plan.
    - local:
 
    ```plaintext
-   URL_LOCAL=http://localhost:3000
+   NEXT_PUBLIC_URL_LOCAL=http://localhost:3000
    ```
 
    ### Backend Environment Variables
