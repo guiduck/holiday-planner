@@ -41,7 +41,7 @@ export default async function archivePlan(planId?: string) {
 
     const response = {
       message: "success",
-      data: `updaed from ${plan.archived} to ${!plan.archived}`,
+      data: `updated from ${plan.archived ? "archived" : "unarchived"} to ${plan.archived ? "unarchived" : "archived"}`,
     };
 
     revalidateTag("get-plans");

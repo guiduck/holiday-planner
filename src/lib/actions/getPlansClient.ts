@@ -9,7 +9,6 @@ export async function getPlansClient() {
       cache: "no-store",
       next: { tags: ["get-plans"], revalidate: 0 },
     });
-    console.log(URL);
 
     if (response.ok) {
       const plans = (await response.json()).data;

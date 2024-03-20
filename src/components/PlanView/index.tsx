@@ -22,8 +22,6 @@ import { Spinner } from "../Spinner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import setPlanIdCookie from "@/lib/actions/set-PlanId";
 import { PlanList } from "../PlanList";
-import { useAlertStore } from "@/stores/alert-store";
-import { getPlansClient } from "@/lib/actions/getPlansClient";
 const AddPlan = dynamic(() => import("../AddPlanPanel"), {
   loading: () => (
     <div className="w-full h-full flex items-center justify-center">
@@ -54,42 +52,17 @@ export function PlanView({
   currentDate,
   plans,
 }: Readonly<PlanProps>) {
-  const [plansData, setPlansData] = React.useState<PlanType[]>([]);
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
   const { selectedPlan, setDisplayPlans, displayPlans, setSelectedPlan } =
     usePlansStore();
   const { showAddPlan, setShowAddPlan } = useModalStore();
-  const { setAlertData } = useAlertStore();
 
   const { width } = useWindowDimensions();
 
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
-
-  const getPlansData = async () => {
-    const plansResult = await getPlansClient();
-
-    if (plansResult.message === "success") {
-      const { data: newPlans } = plansResult;
-      // @ts-ignore
-      setPlansData(newPlans);
-    } else {
-      setAlertData({
-        show: true,
-        message: plansResult?.data as string,
-        time: 5000,
-        type: "error",
-      });
-    }
-  };
-
-  // React.useEffect(() => {
-  //   if (!plans) {
-  //     getPlansData();
-  //   }
-  // }, []);
 
   React.useEffect(() => {
     if (plans && plans.length > 0) {
@@ -131,7 +104,6 @@ export function PlanView({
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction={"horizontal"}
-        // direction={width >= 768 ? "horizontal" : "vertical"}
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout=${JSON.stringify(
             sizes
@@ -155,7 +127,6 @@ export function PlanView({
           className={cn(
             isCollapsed &&
               "min-w-[50px] transition-all duration-300 ease-in-out"
-            // "min-w-[50px] transition-all duration-300 ease-in-out overflow-y-scroll"
           )}
         >
           <Tabs defaultValue="all">
