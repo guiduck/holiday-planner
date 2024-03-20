@@ -9,7 +9,7 @@ export async function getPlans() {
 
     const response = await fetch(`${URL}/api/plans`, {
       cache: "no-store",
-      next: { tags: ["get-plans"] },
+      next: { tags: ["get-plans"], revalidate: 0 },
     });
 
     if (response.ok) {
