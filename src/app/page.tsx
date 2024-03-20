@@ -5,6 +5,8 @@ import getDateCookie from "@/lib/actions/get-Date";
 import { getPlans } from "@/lib/actions/get-Plans";
 import { PlanType } from "@/models/plan-models";
 
+export const revalidate = 10;
+
 export default async function Home() {
   const planResponse = await getPlans();
   const dateResponse = await getDateCookie();
@@ -12,7 +14,6 @@ export default async function Home() {
 
   if (planResponse.message === "success") {
     plans = planResponse.data;
-    console.log(plans);
   }
 
   return (
