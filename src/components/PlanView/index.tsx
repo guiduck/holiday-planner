@@ -71,6 +71,7 @@ export function PlanView({
 
     if (plansResult.message === "success") {
       const { data: plansData } = plansResult;
+      // @ts-ignore
       setPlans(plansData);
     } else {
       setAlertData({
