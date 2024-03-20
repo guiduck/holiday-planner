@@ -15,6 +15,11 @@ import {
 export function ModeToggle() {
   const { setTheme } = useTheme();
 
+  const selectTheme = (theme: string) => {
+    setTheme(theme);
+    window.location.reload();
+  };
+
   return (
     <div className="absolute top-0 left-0">
       <DropdownMenu>
@@ -26,19 +31,19 @@ export function ModeToggle() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setTheme("light")}>
+          <DropdownMenuItem onClick={() => selectTheme("light")}>
             Light
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <DropdownMenuItem onClick={() => selectTheme("dark")}>
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("blue")}>
+          <DropdownMenuItem onClick={() => selectTheme("blue")}>
             Blue
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("green")}>
+          <DropdownMenuItem onClick={() => selectTheme("green")}>
             Green
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("orange")}>
+          <DropdownMenuItem onClick={() => selectTheme("orange")}>
             Orange
           </DropdownMenuItem>
         </DropdownMenuContent>
